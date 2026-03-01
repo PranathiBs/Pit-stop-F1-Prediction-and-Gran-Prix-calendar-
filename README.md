@@ -27,45 +27,9 @@ A high-performance, full-stack Formula 1 prediction application built with **Nex
 - **Deployment**: Vercel
 - **Icons**: Lucide React
 
----
 
-## 📦 Getting Started
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/pit-stop.git
-cd pit-stop
-```
-
-### 2. Install dependencies
-```bash
-npm install
-```
-
-### 3. Set up Environment Variables
-Create a `.env.local` file in the root directory and add your Supabase credentials:
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-### 4. Run the development server
-```bash
-npm run dev
-```
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
----
-
-## 🏁 Deployment
-
-The easiest way to deploy this project is via [Vercel](https://vercel.com). Simply connect your GitHub repository and Vercel will handle the rest, including automatic builds on every push to the `master` branch.
-
----
 
 ## ✨ Developed by
-**[Your Name]** – *F1 Enthusiast & Developer*
+Pranathi B S – *F1 Enthusiast & Developer*
 
----
 
-Licensed under the [MIT License](LICENSE).
