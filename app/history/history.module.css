@@ -1,0 +1,636 @@
+/* ============================================================
+   History Page — history.module.css
+   Cyberpunk / dark theme consistent with the rest of Pit Stop
+   ============================================================ */
+
+/* ─── Layout ─────────────────────────────────────────────── */
+
+.page {
+    min-height: 100vh;
+    padding: 24px 0 80px;
+    color: #fff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* ─── Header ─────────────────────────────────────────────── */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 28px;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.titleIcon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #E10600 0%, #7c0000 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFD700;
+    flex-shrink: 0;
+    box-shadow: 0 4px 20px rgba(225, 6, 0, 0.35);
+}
+
+.title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin: 0;
+    background: linear-gradient(90deg, #fff 30%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    margin: 2px 0 0;
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.45);
+    letter-spacing: 0.5px;
+}
+
+/* ─── Live Badge ─────────────────────────────────────────── */
+
+.liveBadge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: rgba(225, 6, 0, 0.15);
+    border: 1px solid rgba(225, 6, 0, 0.5);
+    color: #ff4444;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    animation: livePulse 2s ease infinite;
+}
+
+.liveDot {
+    color: #ff4444;
+    animation: dotPulse 1s ease infinite;
+}
+
+@keyframes livePulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(225, 6, 0, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 6px rgba(225, 6, 0, 0);
+    }
+}
+
+@keyframes dotPulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+}
+
+/* ─── Tabs ───────────────────────────────────────────────── */
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.tab {
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.09);
+    color: #fff;
+}
+
+.tabActive {
+    background: linear-gradient(135deg, #E10600 0%, #b30000 100%);
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(225, 6, 0, 0.4);
+}
+
+/* ─── Controls bar ───────────────────────────────────────── */
+
+.controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.controlGroup {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.controlLabel {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    white-space: nowrap;
+}
+
+.pillGroup {
+    display: flex;
+    gap: 4px;
+}
+
+.pill {
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: transparent;
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+}
+
+.pill:hover {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+}
+
+.pillActive {
+    background: rgba(225, 6, 0, 0.2);
+    border-color: #E10600;
+    color: #ff4444;
+}
+
+.select {
+    padding: 7px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: #fff;
+    font-size: 0.82rem;
+    cursor: pointer;
+    outline: none;
+}
+
+.select option {
+    background: #1a1a2e;
+}
+
+.refreshBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s;
+    margin-left: auto;
+}
+
+.refreshBtn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+}
+
+.refreshBtn:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* ─── Consistency intro ──────────────────────────────────── */
+
+.consistencyIntro {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: rgba(255, 215, 0, 0.06);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    margin-bottom: 20px;
+    font-size: 0.83rem;
+    color: rgba(255, 255, 255, 0.6);
+    line-height: 1.6;
+}
+
+.consistencyIntro strong {
+    color: #FFD700;
+}
+
+/* ─── Table ──────────────────────────────────────────────── */
+
+.tableWrap {
+    overflow-x: auto;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.84rem;
+}
+
+.th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: rgba(255, 255, 255, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    transition: background 0.15s;
+    animation: rowFadeIn 0.35s ease both;
+}
+
+.tr:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+/* Winner row — GOLD highlight */
+.trWinner {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.09) 0%, transparent 100%);
+    border-left: 3px solid #FFD700;
+}
+
+.trWinner:hover {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.14) 0%, rgba(255, 255, 255, 0.03) 100%);
+}
+
+.td {
+    padding: 12px 16px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.emptyRow {
+    padding: 40px 16px;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+.tableFooter {
+    padding: 10px 16px;
+    font-size: 0.74rem;
+    color: rgba(255, 255, 255, 0.25);
+    text-align: right;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@keyframes rowFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ─── Cell types ─────────────────────────────────────────── */
+
+.medalBadge {
+    font-size: 1.1rem;
+    display: block;
+    text-align: center;
+    min-width: 36px;
+}
+
+.rankBadge {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.raceName {
+    display: block;
+    font-weight: 600;
+    color: #fff;
+    max-width: 200px;
+    white-space: normal;
+    line-height: 1.3;
+}
+
+.circuitName {
+    display: block;
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.35);
+    margin-top: 2px;
+}
+
+.seasonBadge {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(33, 147, 209, 0.35);
+    color: #2293D1;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.driverCell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.driverCode {
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.driverName {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.constructorCell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.83rem;
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.constructorBar {
+    width: 4px;
+    height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.raceTime {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.pointsBadge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: rgba(225, 6, 0, 0.15);
+    color: #E10600;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+/* ─── Consistency Scores ─────────────────────────────────── */
+
+.scoreCell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 150px;
+}
+
+.scoreBar {
+    flex: 1;
+    height: 8px;
+    border-radius: 99px;
+    background: rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+}
+
+.scoreFill {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.6s ease;
+}
+
+.scoreNum {
+    font-size: 0.88rem;
+    font-weight: 800;
+    min-width: 36px;
+    text-align: right;
+}
+
+.avgPos {
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.88rem;
+}
+
+.formDots {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+.formDot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    transition: transform 0.15s;
+    cursor: default;
+}
+
+.formDot:hover {
+    transform: scale(1.5);
+}
+
+/* ─── Live Section ───────────────────────────────────────── */
+
+.liveSection {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.liveHeader {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+}
+
+.sessionPill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+}
+
+.sessionActive {
+    background: rgba(225, 6, 0, 0.15);
+    border-color: rgba(225, 6, 0, 0.5);
+    color: #ff4444;
+}
+
+.sessionInactive {
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.45);
+}
+
+.pollInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.autoHint {
+    font-size: 0.72rem;
+    font-style: italic;
+}
+
+.offlineBanner {
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: rgba(255, 215, 0, 0.05);
+    border: 1px solid rgba(255, 215, 0, 0.15);
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.85rem;
+    line-height: 1.6;
+}
+
+.offlineBanner strong {
+    color: #FFD700;
+}
+
+.tyreBadge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid;
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+.leaderGap {
+    color: #FFD700;
+    font-weight: 800;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+}
+
+/* ─── Loading / Empty ────────────────────────────────────── */
+
+.loadingState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 64px 20px;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+}
+
+.spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #E10600;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.noLive {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 1rem;
+    line-height: 1.7;
+}
+
+.noLive span {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Responsive ─────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 1.4rem;
+    }
+
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .th,
+    .td {
+        padding: 10px 10px;
+    }
+
+    .th {
+        font-size: 0.65rem;
+    }
+}

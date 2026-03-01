@@ -12,6 +12,7 @@ const navItems = [
     { href: '/standings', label: 'Standings', Icon: TrophyIcon },
     { href: '/predictions', label: 'Strategy', Icon: RacingCarIcon },
     { href: '/records', label: 'Records', Icon: StatsIcon },
+    { href: '/history', label: 'History', Icon: LiveIcon },
 ];
 
 export default function Navigation() {

@@ -265,17 +265,129 @@ export async function syncRaceHistory(results: any[]) {
       p3_pts: race.Results?.[2] ? parseInt(race.Results[2].points) : 15,
     }));
 
-    // Upsert into Supabase (requires unique constraint on year+round in DB)
     const { error } = await supabase
       .from('race_results_history')
       .upsert(historyData, { onConflict: 'year,round' });
 
-    if (error) {
-      // If we haven't added the unique constraint yet, this might error. 
-      // We fall back to standard insert for new data.
-      console.warn('Supabase sync warning:', error.message);
-    }
+    if (error) console.warn('Supabase sync warning:', error.message);
   } catch (e) {
     console.error('Supabase sync error:', e);
   }
+}
+
+// ===== ML PREDICTIONS =====
+
+export interface MLPredictionRow {
+  id?: string;
+  year: number;
+  round?: number;
+  gp_name: string;
+  driver_code: string;
+  predicted_pos: number;
+  confidence?: number;
+  base_pace?: number;
+  deg_coef?: number;
+  model_version?: string;
+  features?: Record<string, number>;
+  actual_pos?: number;
+  created_at?: string;
+}
+
+export async function getMLPredictions(year: number, gp: string): Promise<MLPredictionRow[]> {
+  if (!supabase) return [];
+  try {
+    const { data, error } = await supabase
+      .from('ml_predictions')
+      .select('*')
+      .eq('year', year)
+      .eq('gp_name', gp)
+      .order('predicted_pos', { ascending: true });
+    if (error) return [];
+    return data || [];
+  } catch { return []; }
+}
+
+export async function upsertMLPredictions(rows: MLPredictionRow[]) {
+  if (!supabase || !rows.length) return;
+  try {
+    const { error } = await supabase
+      .from('ml_predictions')
+      .upsert(rows, { onConflict: 'year,gp_name,driver_code' });
+    if (error) console.warn('ML upsert warning:', error.message);
+  } catch (e) { console.error('ML upsert error:', e); }
+}
+
+export async function updateActualResult(year: number, gp: string, driverCode: string, actualPos: number) {
+  if (!supabase) return;
+  try {
+    await supabase
+      .from('ml_predictions')
+      .update({ actual_pos: actualPos })
+      .eq('year', year)
+      .eq('gp_name', gp)
+      .eq('driver_code', driverCode);
+  } catch (e) { console.error('updateActualResult error:', e); }
+}
+
+export async function getMLAccuracy(year: number): Promise<{ driver: string; predicted: number; actual: number; delta: number }[]> {
+  if (!supabase) return [];
+  try {
+    const { data } = await supabase
+      .from('ml_predictions')
+      .select('driver_code, predicted_pos, actual_pos')
+      .eq('year', year)
+      .not('actual_pos', 'is', null);
+    return (data || []).map((r: any) => ({
+      driver: r.driver_code,
+      predicted: r.predicted_pos,
+      actual: r.actual_pos,
+      delta: Math.abs(r.actual_pos - r.predicted_pos),
+    }));
+  } catch { return []; }
+}
+
+// ===== DRIVER CONSISTENCY (from Supabase) =====
+
+export interface ConsistencyRow {
+  driver_id: string;
+  driver_code: string;
+  driver_name: string;
+  constructor_id?: string;
+  constructor_name?: string;
+  season: number;
+  avg_position: number;
+  consistency_score: number;
+  wins: number;
+  podiums: number;
+  dnfs: number;
+  races: number;
+  recent_form: number[];
+  updated_at?: string;
+}
+
+export async function getDriverConsistency(season?: number): Promise<ConsistencyRow[]> {
+  if (!supabase) return [];
+  try {
+    let q = supabase.from('driver_consistency').select('*').order('consistency_score', { ascending: false });
+    if (season) q = q.eq('season', season);
+    const { data } = await q;
+    return data || [];
+  } catch { return []; }
+}
+
+// ===== LIVE SESSION CACHE =====
+
+export async function getLiveCache() {
+  if (!supabase) return null;
+  try {
+    const { data } = await supabase
+      .from('live_session_cache')
+      .select('*')
+      .eq('id', 1)
+      .single();
+    if (!data?.fetched_at) return null;
+    const ageMs = Date.now() - new Date(data.fetched_at).getTime();
+    if (ageMs > 30_000) return null; // expired
+    return data;
+  } catch { return null; }
 }

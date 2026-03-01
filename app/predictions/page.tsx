@@ -6,6 +6,7 @@ import { getRaceSchedule, Race } from '@/lib/f1-api';
 import { getCurrentWeather, getWeatherEmoji, WeatherData } from '@/lib/weather-api';
 import { predictStrategy, mapCircuitId, CIRCUIT_DATA, getTyreColor, getTyreShort, Strategy, CircuitCharacteristics } from '@/lib/tyre-strategy';
 import { getCircuitDetail } from '@/lib/circuit-data';
+import { getMLPrediction, type MLResult } from '@/lib/ml-engine';
 
 export default function PredictionsPage() {
     const [races, setRaces] = useState<Race[]>([]);
@@ -15,6 +16,8 @@ export default function PredictionsPage() {
     const [trackData, setTrackData] = useState<CircuitCharacteristics | null>(null);
     const [loading, setLoading] = useState(false);
     const [initialLoading, setInitialLoading] = useState(true);
+    const [mlResult, setMlResult] = useState<MLResult | null>(null);
+    const [mlLoading, setMlLoading] = useState(false);
 
     // Custom weather overrides
     const [customTemp, setCustomTemp] = useState<number>(25);
@@ -55,7 +58,7 @@ export default function PredictionsPage() {
         const track = CIRCUIT_DATA[mapped] || null;
         setTrackData(track);
 
-        // Predict strategies
+        // Predict tyre strategies
         if (weatherData) {
             const effectiveWeather = useCustomWeather ? {
                 ...weatherData,
@@ -66,6 +69,19 @@ export default function PredictionsPage() {
 
             const predictions = predictStrategy(mapped, effectiveWeather);
             setStrategies(predictions);
+
+            // Kick off ML race prediction (async, non-blocking)
+            setMlLoading(true);
+            setMlResult(null);
+            getMLPrediction(
+                new Date().getFullYear() - 1,
+                race.raceName.replace(' Grand Prix', ''),
+                effectiveWeather.temp,
+                effectiveWeather.rain_probability,
+            ).then(result => {
+                setMlResult(result);
+                setMlLoading(false);
+            });
         }
 
         setLoading(false);
@@ -247,6 +263,42 @@ export default function PredictionsPage() {
                                 </div>
                             </div>
                         )}
+
+                        {/* ─── ML Race Prediction Grid ─────────────────── */}
+                        <div className={styles.mlSection}>
+                            <div className={styles.mlHeader}>
+                                <span className={styles.mlTitle}>🤖 ML Race Prediction</span>
+                                <span className={styles.mlBadge}>{mlResult?.version ?? 'rf_v2'}</span>
+                                {mlResult?.from_cache && <span className={styles.cacheTag}>cached</span>}
+                            </div>
+                            {mlLoading && (
+                                <div className={styles.mlLoading}>
+                                    <div className={styles.spinner} />
+                                    <p>RandomForest engine computing grid…</p>
+                                </div>
+                            )}
+                            {mlResult?.error && (
+                                <div className={styles.mlOffline}>
+                                    ⚠️ ML engine offline — start the Python backend to enable predictions.<br />
+                                    <code>python main.py</code>
+                                </div>
+                            )}
+                            {!mlLoading && mlResult && !mlResult.error && mlResult.predictions.length > 0 && (
+                                <div className={styles.mlGrid}>
+                                    {mlResult.predictions.slice(0, 10).map((p, i) => (
+                                        <div key={p.driver} className={`${styles.mlRow} ${i === 0 ? styles.mlWinner : ''}`}>
+                                            <span className={styles.mlPos}>{i === 0 ? '🏆' : i === 1 ? '🥈' : i === 2 ? '🥉' : `P${p.predicted_pos}`}</span>
+                                            <span className={styles.mlDriver}>{p.driver}</span>
+                                            <div className={styles.mlConfBar}>
+                                                <div className={styles.mlConfFill} style={{ width: `${p.confidence}%`, background: p.confidence >= 70 ? '#00e676' : p.confidence >= 50 ? '#FFD700' : '#ff9800' }} />
+                                            </div>
+                                            <span className={styles.mlConf}>{p.confidence.toFixed(0)}%</span>
+                                            <span className={styles.mlPace}>{p.base_pace.toFixed(3)}s</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
                         {/* Strategy Results */}
                         {loading ? (
