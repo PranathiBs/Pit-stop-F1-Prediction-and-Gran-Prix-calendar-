@@ -123,6 +123,9 @@
 }
 
 .tab {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     padding: 10px 22px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -137,6 +140,17 @@
 .tab:hover {
     background: rgba(255, 255, 255, 0.09);
     color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.tab svg {
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+}
+
+.tab:hover svg {
+    transform: translateY(-1px);
+    opacity: 1;
 }
 
 .tabActive {
@@ -144,6 +158,11 @@
     border-color: transparent;
     color: #fff;
     box-shadow: 0 4px 16px rgba(225, 6, 0, 0.4);
+}
+
+.tabActive svg {
+    opacity: 1;
+    filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.4));
 }
 
 /* ─── Controls bar ───────────────────────────────────────── */

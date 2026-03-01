@@ -15,10 +15,29 @@ import { getTeamColor } from '@/lib/team-colors';
 // ─── Icons (inline SVG to avoid extra deps) ───────────────────────────────
 
 const IconTrophy = ({ size = 20 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" style={{ filter: 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.4))' }}>
         <path d="M6 9H4a2 2 0 0 1-2-2V5h4" /><path d="M18 9h2a2 2 0 0 0 2-2V5h-4" />
         <path d="M12 17c-2.8 0-5-2.2-5-5V4h10v8c0 2.8-2.2 5-5 5z" />
         <line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+    </svg>
+);
+
+const IconPodium = ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M22 20H2" /><path d="M7 20V10" /><path d="M11 20V6" /><path d="M15 20V14" />
+        <rect x="7" y="10" width="4" height="10" /><rect x="11" y="6" width="4" height="14" /><rect x="15" y="14" width="4" height="6" />
+    </svg>
+);
+
+const IconChart = ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 3v18h18" /><path d="M18 17l-6-6-4 4-5-5" />
+    </svg>
+);
+
+const IconRadio = ({ size = 18 }: { size?: number }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="2" /><path d="M16.24 7.76a6 6 0 0 1 0 8.48" /><path d="M17.66 6.34a8 8 0 0 1 0 11.32" /><path d="M7.76 16.24a6 6 0 0 1 0-8.48" /><path d="M6.34 17.66a8 8 0 0 1 0-11.32" />
     </svg>
 );
 
@@ -30,14 +49,13 @@ const IconLive = ({ size = 14 }: { size?: number }) => (
 );
 
 const IconRefresh = ({ size = 16 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-        <polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" />
-        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+        <path d="M23 4v6h-6" /><path d="M1 20v-6h6" /><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
     </svg>
 );
 
 const IconFilter = ({ size = 16 }: { size?: number }) => (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
     </svg>
 );
@@ -182,9 +200,9 @@ export default function HistoryPage() {
                             className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
                             onClick={() => setTab(t)}
                         >
-                            {t === 'podiums' && '🏆 Podiums'}
-                            {t === 'consistency' && '📊 Consistency'}
-                            {t === 'live' && '📡 Live Race'}
+                            {t === 'podiums' && <><IconPodium size={18} /> Podiums</>}
+                            {t === 'consistency' && <><IconChart size={18} /> Consistency</>}
+                            {t === 'live' && <><IconRadio size={18} /> Live Race</>}
                         </button>
                     ))}
                 </div>
