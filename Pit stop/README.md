@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏎️ Pit Stop: F1 Prediction Platform
 
-## Getting Started
+A high-performance, full-stack Formula 1 prediction application built with **Next.js 15**, **React 19**, and **Supabase**. Compete with fans worldwide, predict race outcomes, and climb the leaderboard with a sleek cyberpunk-inspired UI.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![Supabase](https://img.shields.io/badge/Supabase-Database-green?style=for-the-badge&logo=supabase)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Dynamic Race Calendar**: Stay updated with the latest F1 season schedule.
+- **Podium Predictions**: Cast your votes for the top 3 finishers, fastest lap, and more.
+- **Cyberpunk UI**: A stunning, responsive interface with neon glows, glassmorphism, and smooth animations.
+- **Real-time Leaderboards**: Track your performance against other predictors globally.
+- **Secure Authentication**: Built-in user management powered by Supabase Auth.
+- **Mobile Responsive**: Perfect for making last-minute predictions on your phone.
+- **AI Data Engine**: Real-time race simulations using FastF1 and Scikit-Learn.
+- **Live Telemetry Comparison**: Side-by-side driver analysis (Qualifying & Race).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
 
-To learn more about Next.js, take a look at the following resources:
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS
+- **Compute Engine (AI)**: FastAPI, FastF1, Scikit-Learn, Pandas
+- **Backend/DB**: Supabase (Postgres, Auth, Edge Functions)
+- **Deployment**: Next.js on Vercel, Python on Streamlit/Render
+- **Data APIs**: OpenF1, Jolpica (Ergast V2), FastF1
+- **Icons**: Lucide React
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## ✨ Developed by
+Pranathi B S – *F1 Enthusiast & Developer*
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

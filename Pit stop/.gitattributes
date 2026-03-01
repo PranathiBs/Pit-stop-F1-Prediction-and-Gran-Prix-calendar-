@@ -1,2 +1,18 @@
-# Auto detect text files and perform LF normalization
+# Handle line endings automatically for files detected as text
+# and leave binary files untouched.
 * text=auto
+
+# Force LF line endings for certain files that are typically
+# text files used in development (highly recommended for web dev)
+*.js text eol=lf
+*.jsx text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+
+# Explicitly declare Windows batch files as CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf

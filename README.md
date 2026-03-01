@@ -17,19 +17,22 @@ A high-performance, full-stack Formula 1 prediction application built with **Nex
 - **Real-time Leaderboards**: Track your performance against other predictors globally.
 - **Secure Authentication**: Built-in user management powered by Supabase Auth.
 - **Mobile Responsive**: Perfect for making last-minute predictions on your phone.
+- **AI Data Engine**: Real-time race simulations using FastF1 and Scikit-Learn.
+- **Live Telemetry Comparison**: Side-by-side driver analysis (Qualifying & Race).
 
 ---
 
 ## 🛠️ Tech Stack
 
 - **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS
-- **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
-- **Deployment**: Vercel
+- **Compute Engine (AI)**: FastAPI, FastF1, Scikit-Learn, Pandas
+- **Backend/DB**: Supabase (Postgres, Auth, Edge Functions)
+- **Deployment**: Next.js on Vercel, Python on Streamlit/Render
+- **Data APIs**: OpenF1, Jolpica (Ergast V2), FastF1
 - **Icons**: Lucide React
 
 
 
 ## ✨ Developed by
 Pranathi B S – *F1 Enthusiast & Developer*
-
 

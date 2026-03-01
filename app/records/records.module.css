@@ -162,7 +162,66 @@
 .resultsSection {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 20px;
+}
+
+.seasonInsight {
+    background: linear-gradient(135deg, rgba(225, 6, 0, 0.15) 0%, transparent 100%);
+    border: 1px solid rgba(225, 6, 0, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.insightTag {
+    background: #E10600;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.insightHeadline {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: white;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.insightBarCont {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+    margin-bottom: 12px;
+    overflow: hidden;
+}
+
+.insightBar {
+    height: 100%;
+    background: linear-gradient(90deg, #E10600, #ff4d4d);
+    box-shadow: 0 0 10px rgba(225, 6, 0, 0.3);
+    border-radius: 3px;
+    transition: width 1s ease-out;
+}
+
+.insightSubtext {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .raceCard {
@@ -214,6 +273,31 @@
     gap: 5px;
     font-size: 0.75rem;
     color: rgba(255, 255, 255, 0.4);
+}
+
+.raceAction {
+    margin-left: auto;
+}
+
+.miniInsightBtn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    color: rgba(255, 255, 255, 0.6);
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.miniInsightBtn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    border-color: rgba(255, 255, 255, 0.2);
 }
 
 .raceResults {
@@ -312,6 +396,85 @@
     color: rgba(255, 255, 255, 0.5);
     min-width: 36px;
     text-align: right;
+}
+
+/* Podium Trio Layout */
+.podiumTrio {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr 1fr;
+    gap: 12px;
+    padding: 16px 12px;
+    align-items: flex-end;
+}
+
+.podiumCard {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.podiumCard:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.podiumCard.p1 {
+    order: 2;
+    padding: 24px 16px;
+    border-color: rgba(255, 215, 0, 0.3);
+    background: linear-gradient(180deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 215, 0, 0.02) 100%);
+}
+
+.podiumCard.p2 {
+    order: 1;
+    border-color: rgba(192, 192, 192, 0.2);
+}
+
+.podiumCard.p3 {
+    order: 3;
+    border-color: rgba(205, 127, 50, 0.2);
+}
+
+.podiumIcon {
+    margin-bottom: 12px;
+    filter: drop-shadow(0 0 8px currentColor);
+}
+
+.podiumDriver {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.podiumTeam {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-bottom: 8px;
+}
+
+.podiumTime {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #E10600;
+    font-weight: 600;
+}
+
+.podiumTeamBar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
 }
 
 /* Fastest Laps */
@@ -509,4 +672,261 @@
     .fastestGrid {
         grid-template-columns: 1fr;
     }
+
+    .podiumTrio {
+        grid-template-columns: 1fr;
+        align-items: stretch;
+    }
+
+    .podiumCard.p1 {
+        order: 1;
+    }
+
+    .podiumCard.p2 {
+        order: 2;
+    }
+
+    .podiumCard.p3 {
+        order: 3;
+    }
+
+    .insightHeadline {
+        font-size: 1.1rem;
+    }
+}
+
+/* Live Insights */
+.insightsSection {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.insightsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.insightCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+}
+
+.insightCard::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 100%;
+    background: #E10600;
+}
+
+.insightTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #E10600;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.insightStat {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.insightStat:last-child {
+    border-bottom: none;
+}
+
+.insightLabel {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.insightValue {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: white;
+}
+
+.intervalsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.intervalItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.intervalDriver {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.intervalGap {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #E10600;
+    font-weight: 700;
+}
+
+.compoundTag {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    flex-shrink: 0;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.stintItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 10px;
+    margin-bottom: 8px;
+}
+
+.stintDriver {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+}
+
+.syncBtn {
+    background: rgba(225, 6, 0, 0.1);
+    border: 1px solid rgba(225, 6, 0, 0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.syncBtn:hover {
+    background: #E10600;
+    border-color: #E10600;
+    transform: translateY(-1px);
+}
+
+.predictionCard {
+    background: linear-gradient(135deg, rgba(80, 0, 255, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+    border-color: rgba(80, 0, 255, 0.3) !important;
+}
+
+.predictionList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.predictionItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.driverCode {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: white;
+    width: 35px;
+}
+
+.paceBar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.paceFill {
+    height: 100%;
+    background: linear-gradient(90deg, #5000ff, #ff00ff);
+    box-shadow: 0 0 10px rgba(80, 0, 255, 0.5);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paceScore {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: white;
+    width: 60px;
+    text-align: right;
+}
+
+.predictionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modelTag {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+    background: rgba(80, 0, 255, 0.2);
+    border: 1px solid rgba(80, 0, 255, 0.4);
+    color: #ff00ff;
+    border-radius: 4px;
+    font-weight: 800;
+}
+
+.driverInfo {
+    display: flex;
+    flex-direction: column;
+    width: 70px;
+}
+
+.degTag {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.4);
+    font-family: 'JetBrains Mono', monospace;
+    margin-top: 2px;
+}
+
+.predictionAlert {
+    margin-top: 16px;
+    font-size: 0.7rem;
+    color: #4CAF50;
+    font-weight: 600;
+    text-align: center;
+    background: rgba(76, 175, 80, 0.1);
+    padding: 6px;
+    border-radius: 4px;
 }

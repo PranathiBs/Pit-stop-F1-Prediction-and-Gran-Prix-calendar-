@@ -40,9 +40,11 @@ const recordIcons: { [key: string]: React.ReactNode } = {
 export default function RecordsPage() {
     const [results, setResults] = useState<Race[]>([]);
     const [fastestLaps, setFastestLaps] = useState<FastestLapInfo[]>([]);
-    const [activeTab, setActiveTab] = useState<'results' | 'fastest' | 'history'>('results');
+    const [activeTab, setActiveTab] = useState<'results' | 'fastest' | 'history' | 'insights'>('results');
     const [loading, setLoading] = useState(true);
     const [selectedSeason, setSelectedSeason] = useState('current');
+    const [liveInsights, setLiveInsights] = useState<any>(null);
+    const [fastPrediction, setFastPrediction] = useState<any>(null);
 
     const fetchData = useCallback(async () => {
         setLoading(true);
@@ -53,6 +55,13 @@ export default function RecordsPage() {
             ]);
 
             setResults(resultsData);
+
+            // AUTO-SYNC: Store these results in Supabase automatically
+            if (resultsData && resultsData.length > 0) {
+                import('@/lib/supabase').then(mod => {
+                    mod.syncRaceHistory(resultsData);
+                });
+            }
 
             const lapData: FastestLapInfo[] = fastData.map((race: Race) => {
                 const res = race.Results?.[0];
@@ -79,17 +88,17 @@ export default function RecordsPage() {
         { record: 'Most Race Wins', holder: 'Lewis Hamilton', value: '105', iconKey: 'flag' },
         { record: 'Most Pole Positions', holder: 'Lewis Hamilton', value: '104', iconKey: 'bolt' },
         { record: 'Most Podiums', holder: 'Lewis Hamilton', value: '201', iconKey: 'medal' },
-        { record: 'Most Fastest Laps', holder: 'Lewis Hamilton', value: '67', iconKey: 'clock' },
+        { record: 'Most Fastest Laps', holder: 'Michael Schumacher', value: '77', iconKey: 'clock' },
         { record: 'Most Points in a Season', holder: 'Max Verstappen (2023)', value: '575', iconKey: 'stats' },
         { record: 'Most Wins in a Season', holder: 'Max Verstappen (2023)', value: '19', iconKey: 'bolt' },
         { record: 'Most Consecutive Wins', holder: 'Max Verstappen (2023)', value: '10', iconKey: 'stats' },
-        { record: 'Most Grand Prix Entries', holder: 'Fernando Alonso', value: '400+', iconKey: 'car' },
+        { record: 'Most Grand Prix Entries', holder: 'Fernando Alonso', value: '401+', iconKey: 'car' },
         { record: 'Youngest World Champion', holder: 'Sebastian Vettel (2010)', value: '23y 134d', iconKey: 'helmet' },
         { record: 'Most Constructor Titles', holder: 'Ferrari', value: '16', iconKey: 'constructor' },
         { record: 'Most Constructor Wins', holder: 'Ferrari', value: '243', iconKey: 'constructor' },
-        { record: 'Fastest Pit Stop', holder: 'Red Bull Racing (2019)', value: '1.82s', iconKey: 'pitstop' },
+        { record: 'Fastest Pit Stop', holder: 'McLaren (2023)', value: '1.80s', iconKey: 'pitstop' },
         { record: 'Longest Race (Distance)', holder: '2011 Canadian GP', value: '4:04:39', iconKey: 'circuit' },
-        { record: 'Most Laps Led (Career)', holder: 'Lewis Hamilton', value: '5500+', iconKey: 'flag' },
+        { record: 'Most Laps Led (Career)', holder: 'Lewis Hamilton', value: '5455', iconKey: 'flag' },
         { record: 'Highest Top Speed (Race)', holder: 'Valtteri Bottas (2016)', value: '372.5 km/h', iconKey: 'speed' },
     ];
 
@@ -109,11 +118,14 @@ export default function RecordsPage() {
                         value={selectedSeason}
                         onChange={(e) => setSelectedSeason(e.target.value)}
                     >
-                        <option value="current">{new Date().getFullYear()}</option>
-                        <option value="2025">2025</option>
-                        <option value="2024">2024</option>
-                        <option value="2023">2023</option>
-                        <option value="2022">2022</option>
+                        <option value="current">LIVE 2026 SEASON</option>
+                        <option value="2025">2025 Season</option>
+                        <option value="2024">2024 Season</option>
+                        <option value="2023">2023 Season</option>
+                        <option value="2022">2022 Season</option>
+                        <option value="2021">2021 Season</option>
+                        <option value="2020">2020 Season</option>
+                        <option value="2019">2019 Season</option>
                     </select>
                 </div>
 
@@ -140,6 +152,50 @@ export default function RecordsPage() {
                         <TrophyIcon size={16} color={activeTab === 'history' ? '#E10600' : 'currentColor'} />
                         <span>All-Time Records</span>
                     </button>
+                    {(selectedSeason === 'current' || selectedSeason === '2026') && (
+                        <button
+                            className={`${styles.tab} ${activeTab === 'insights' ? styles.tabActive : ''}`}
+                            onClick={() => {
+                                setActiveTab('insights');
+                                // Fetch live insights when tab clicked
+                                import('@/lib/f1-api').then(async mod => {
+                                    const session = await mod.getLatestSession();
+                                    if (session) {
+                                        const [intervals, weather, stints, prediction] = await Promise.all([
+                                            mod.getIntervalData(session.session_key),
+                                            mod.getLiveWeather(session.session_key),
+                                            mod.getStints(session.session_key),
+                                            mod.getFastPredict(2024, 'Bahrain') // Example GP for prediction
+                                        ]);
+                                        setLiveInsights({
+                                            session,
+                                            intervals: (intervals || []).slice(0, 5),
+                                            weather: weather ? weather[0] : null,
+                                            stints: (stints || []).slice(0, 10)
+                                        });
+                                        setFastPrediction(prediction);
+                                    }
+                                });
+                            }}
+                        >
+                            <StatsIcon size={16} color={activeTab === 'insights' ? '#E10600' : 'currentColor'} />
+                            <span>Live Insights</span>
+                        </button>
+                    )}
+                    <button
+                        className={styles.syncBtn}
+                        onClick={() => {
+                            if (results.length > 0) {
+                                import('@/lib/supabase').then(mod => {
+                                    mod.syncRaceHistory(results);
+                                    alert('Successfully synced results to database!');
+                                });
+                            }
+                        }}
+                    >
+                        <CircuitIcon size={14} color="white" />
+                        <span>Sync Results</span>
+                    </button>
                 </div>
 
                 {loading && activeTab !== 'history' ? (
@@ -149,8 +205,106 @@ export default function RecordsPage() {
                     </div>
                 ) : (
                     <>
+                        {activeTab === 'insights' && (
+                            <div className={styles.insightsSection}>
+                                {liveInsights ? (
+                                    <div className={styles.insightsGrid}>
+                                        <div className={styles.insightCard}>
+                                            <h4 className={styles.insightTitle}>Current Session: {liveInsights.session.session_name}</h4>
+                                            <div className={styles.insightStat}>
+                                                <span className={styles.insightLabel}>Location</span>
+                                                <span className={styles.insightValue}>{liveInsights.session.location}</span>
+                                            </div>
+                                            {liveInsights.weather && (
+                                                <div className={styles.insightStat}>
+                                                    <span className={styles.insightLabel}>Track Temp</span>
+                                                    <span className={styles.insightValue}>{liveInsights.weather.track_temperature}°C</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                        {liveInsights.stints && liveInsights.stints.length > 0 && (
+                                            <div className={styles.insightCard}>
+                                                <h4 className={styles.insightTitle}>Current Stints & Tyres</h4>
+                                                <div className={styles.stintsList}>
+                                                    {liveInsights.stints.map((stint: any, i: number) => (
+                                                        <div key={i} className={styles.stintItem}>
+                                                            <div className={styles.compoundTag} style={{ color: stint.compound === 'SOFT' ? '#ff3333' : stint.compound === 'MEDIUM' ? '#ffff33' : '#ffffff' }}>
+                                                                {stint.compound?.[0] || 'U'}
+                                                            </div>
+                                                            <span className={styles.stintDriver}>Driver #{stint.driver_number}</span>
+                                                            <span className={styles.resultPts}>Lap {stint.lap_start}</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className={styles.insightCard}>
+                                            <h4 className={styles.insightTitle}>Real-time Gaps (Top 5)</h4>
+                                            <div className={styles.intervalsList}>
+                                                {liveInsights.intervals.map((int: any, i: number) => (
+                                                    <div key={i} className={styles.intervalItem}>
+                                                        <span className={styles.intervalDriver}>Driver #{int.driver_number}</span>
+                                                        <span className={styles.intervalGap}>+{int.interval}s</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        {fastPrediction && fastPrediction.predictions && (
+                                            <div className={`${styles.insightCard} ${styles.predictionCard}`}>
+                                                <div className={styles.predictionHeader}>
+                                                    <h4 className={styles.insightTitle}>🔮 AI Race Simulation</h4>
+                                                    <span className={styles.modelTag}>{fastPrediction.simulation_type}</span>
+                                                </div>
+                                                <div className={styles.predictionList}>
+                                                    {fastPrediction.predictions?.map((p: any, i: number) => (
+                                                        <div key={i} className={styles.predictionItem}>
+                                                            <div className={styles.driverInfo}>
+                                                                <span className={styles.driverCode}>{p.driver}</span>
+                                                                <span className={styles.degTag}>Deg: {p.degredation.toFixed(3)}s</span>
+                                                            </div>
+                                                            <div className={styles.paceBar}>
+                                                                <div className={styles.paceFill} style={{ width: `${Math.max(50, 100 - (p.sim_score - fastPrediction.predictions[0].sim_score) * 10)}%` }} />
+                                                            </div>
+                                                            <span className={styles.paceScore}>{p.sim_score.toFixed(2)}s</span>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <div className={styles.emptyState}>
+                                        <SpeedometerIcon size={48} color="rgba(255,255,255,0.2)" />
+                                        <h3 className={styles.emptyTitle}>Live Telemetry Offline</h3>
+                                        <p className={styles.emptyDesc}>Real-time insights are available during active race weekends. Check back during the Australian GP!</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                         {activeTab === 'results' && (
                             <div className={styles.resultsSection}>
+                                {(selectedSeason === 'current' || selectedSeason === '2026') && results.length > 0 && (
+                                    <div className={styles.seasonInsight}>
+                                        <div className={styles.insightTag}>Season Insight</div>
+                                        <h3 className={styles.insightHeadline}>
+                                            {(() => {
+                                                const standings: Record<string, number> = {};
+                                                results.forEach(r => r.Results?.forEach(res => {
+                                                    const dName = res.Driver.familyName;
+                                                    standings[dName] = (standings[dName] || 0) + parseInt(res.points);
+                                                }));
+                                                const leader = Object.entries(standings).sort((a, b) => b[1] - a[1])[0];
+                                                if (!leader) return 'Calculating standings...';
+                                                return `${leader[0]} leads the ${selectedSeason === '2026' ? '2026' : 'current'} Championship with ${leader[1]} points after ${results.length} rounds.`;
+                                            })()}
+                                        </h3>
+                                        <div className={styles.insightBarCont}>
+                                            <div className={styles.insightBar} style={{ width: `${(results.length / 28) * 100}%` }} />
+                                        </div>
+                                        <div className={styles.insightSubtext}>{results.length} of 28 Rounds Completed</div>
+                                    </div>
+                                )}
                                 {results.map((race) => (
                                     <div key={`${race.season}-${race.round}`} className={styles.raceCard}>
                                         <div className={styles.raceCardHeader}>
@@ -165,24 +319,30 @@ export default function RecordsPage() {
                                                     {race.Circuit.circuitName} • {new Date(race.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                                 </span>
                                             </div>
+                                            <div className={styles.raceAction}>
+                                                <button className={styles.miniInsightBtn}>
+                                                    <StatsIcon size={12} />
+                                                    Details
+                                                </button>
+                                            </div>
                                         </div>
                                         {race.Results && (
-                                            <div className={styles.raceResults}>
-                                                {race.Results.slice(0, 5).map((result) => (
-                                                    <div key={result.Driver.driverId} className={styles.resultItem}>
-                                                        <span className={`${styles.resultPosition} ${parseInt(result.position) <= 3 ? styles.topResult : ''}`}>
-                                                            {parseInt(result.position) <= 3 ?
-                                                                <MedalIcon size={14} color={parseInt(result.position) === 1 ? '#FFD700' : parseInt(result.position) === 2 ? '#C0C0C0' : '#CD7F32'} /> :
-                                                                `P${result.position}`
-                                                            }
-                                                        </span>
-                                                        <div className={styles.resultTeamBar} style={{ background: getTeamColor(result.Constructor.constructorId) }} />
-                                                        <span className={styles.resultDriverName}>{result.Driver.code || result.Driver.familyName.substring(0, 3).toUpperCase()}</span>
-                                                        <span className={styles.resultTeamName}>{result.Constructor.name}</span>
-                                                        <span className={styles.resultTime}>{result.Time?.time || result.status}</span>
-                                                        <span className={styles.resultPts}>+{result.points}</span>
-                                                    </div>
-                                                ))}
+                                            <div className={styles.podiumTrio}>
+                                                {race.Results.slice(0, 3).map((result) => {
+                                                    const pos = parseInt(result.position);
+                                                    const pClass = pos === 1 ? styles.p1 : pos === 2 ? styles.p2 : styles.p3;
+                                                    return (
+                                                        <div key={result.Driver.driverId} className={`${styles.podiumCard} ${pClass}`}>
+                                                            <div className={styles.podiumIcon}>
+                                                                <MedalIcon size={pos === 1 ? 24 : 18} color={pos === 1 ? '#FFD700' : pos === 2 ? '#C0C0C0' : '#CD7F32'} />
+                                                            </div>
+                                                            <span className={styles.podiumDriver}>{result.Driver.code || result.Driver.familyName.substring(0, 3).toUpperCase()}</span>
+                                                            <span className={styles.podiumTeam}>{result.Constructor.name}</span>
+                                                            <div className={styles.podiumTime}>{result.Time?.time || result.status}</div>
+                                                            <div className={styles.podiumTeamBar} style={{ background: getTeamColor(result.Constructor.constructorId) }} />
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>
@@ -264,7 +424,7 @@ export default function RecordsPage() {
                         )}
                     </>
                 )}
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }
