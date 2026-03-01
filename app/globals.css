@@ -1,0 +1,521 @@
+/* ===== PIT STOP - F1 PREDICTION APP ===== */
+/* Global Design System */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* F1 Color Palette */
+  --f1-red: #E10600;
+  --f1-red-dark: #B30500;
+  --f1-red-glow: rgba(225, 6, 0, 0.4);
+  --f1-red-subtle: rgba(225, 6, 0, 0.1);
+  
+  --carbon-900: #0a0a0a;
+  --carbon-800: #111111;
+  --carbon-700: #1a1a1a;
+  --carbon-600: #222222;
+  --carbon-500: #2a2a2a;
+  --carbon-400: #333333;
+  --carbon-300: #444444;
+  --carbon-200: #666666;
+  --carbon-100: #999999;
+  
+  --white: #ffffff;
+  --white-90: rgba(255,255,255,0.9);
+  --white-70: rgba(255,255,255,0.7);
+  --white-50: rgba(255,255,255,0.5);
+  --white-30: rgba(255,255,255,0.3);
+  --white-10: rgba(255,255,255,0.1);
+  --white-05: rgba(255,255,255,0.05);
+  
+  /* Tyre Colors */
+  --tyre-soft: #FF3333;
+  --tyre-medium: #FFC906;
+  --tyre-hard: #FFFFFF;
+  --tyre-inter: #39B54A;
+  --tyre-wet: #0072C6;
+  
+  /* Team Colors */
+  --team-redbull: #3671C6;
+  --team-mercedes: #6CD3BF;
+  --team-ferrari: #F91536;
+  --team-mclaren: #F58020;
+  --team-astonmartin: #358C75;
+  --team-alpine: #2293D1;
+  --team-williams: #37BEDD;
+  --team-haas: #B6BABD;
+  --team-sauber: #52E252;
+  --team-rb: #6692FF;
+  
+  /* Weather Colors */
+  --weather-sun: #FFD700;
+  --weather-cloud: #87CEEB;
+  --weather-rain: #4A90D9;
+  --weather-storm: #6B5B95;
+  
+  /* Gradients */
+  --gradient-f1: linear-gradient(135deg, var(--f1-red) 0%, #ff4136 100%);
+  --gradient-carbon: linear-gradient(180deg, var(--carbon-700) 0%, var(--carbon-900) 100%);
+  --gradient-dark: linear-gradient(135deg, var(--carbon-800) 0%, var(--carbon-900) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  --gradient-shine: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 20px var(--f1-red-glow);
+  --shadow-glow-sm: 0 0 10px var(--f1-red-glow);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Typography */
+  --font-display: 'Orbitron', sans-serif;
+  --font-body: 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* Reset & Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--carbon-900);
+  color: var(--white-90);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Carbon Fiber Background Pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 4px 4px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--carbon-800);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--carbon-400);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--f1-red);
+}
+
+/* Links */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Selection */
+::selection {
+  background: var(--f1-red);
+  color: var(--white);
+}
+
+/* ===== COMPONENT STYLES ===== */
+
+/* Glass Card */
+.glass-card {
+  background: var(--gradient-glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--white-10);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-shine);
+  transition: left var(--transition-slow);
+}
+
+.glass-card:hover {
+  border-color: var(--f1-red-glow);
+  box-shadow: var(--shadow-glow-sm);
+  transform: translateY(-2px);
+}
+
+.glass-card:hover::before {
+  left: 100%;
+}
+
+/* Racing Stripe */
+.racing-stripe {
+  position: relative;
+}
+
+.racing-stripe::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: var(--gradient-f1);
+  transition: width var(--transition-base);
+  border-radius: var(--radius-full);
+}
+
+.racing-stripe:hover::after {
+  width: 100%;
+}
+
+/* F1 Button */
+.f1-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 12px 24px;
+  background: var(--gradient-f1);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.f1-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left var(--transition-slow);
+}
+
+.f1-button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-glow);
+}
+
+.f1-button:hover::after {
+  left: 100%;
+}
+
+.f1-button:active {
+  transform: translateY(0);
+}
+
+.f1-button-outline {
+  background: transparent;
+  border: 1px solid var(--f1-red);
+  color: var(--f1-red);
+}
+
+.f1-button-outline:hover {
+  background: var(--f1-red-subtle);
+}
+
+/* Section Title */
+.section-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  margin-bottom: var(--space-lg);
+  position: relative;
+  display: inline-block;
+}
+
+.section-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-f1);
+  border-radius: var(--radius-full);
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-live {
+  background: var(--f1-red);
+  color: var(--white);
+  animation: pulse 2s infinite;
+}
+
+.badge-upcoming {
+  background: var(--white-10);
+  color: var(--white-70);
+  border: 1px solid var(--white-10);
+}
+
+.badge-completed {
+  background: rgba(57, 181, 74, 0.15);
+  color: #39B54A;
+  border: 1px solid rgba(57, 181, 74, 0.3);
+}
+
+/* Weather Icon Colors */
+.weather-sunny { color: var(--weather-sun); }
+.weather-cloudy { color: var(--weather-cloud); }
+.weather-rainy { color: var(--weather-rain); }
+.weather-stormy { color: var(--weather-storm); }
+
+/* Tyre Indicators */
+.tyre-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 800;
+  font-family: var(--font-display);
+  border: 2px solid;
+}
+
+.tyre-soft {
+  border-color: var(--tyre-soft);
+  color: var(--tyre-soft);
+  background: rgba(255, 51, 51, 0.1);
+}
+
+.tyre-medium {
+  border-color: var(--tyre-medium);
+  color: var(--tyre-medium);
+  background: rgba(255, 201, 6, 0.1);
+}
+
+.tyre-hard {
+  border-color: var(--tyre-hard);
+  color: var(--tyre-hard);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.tyre-inter {
+  border-color: var(--tyre-inter);
+  color: var(--tyre-inter);
+  background: rgba(57, 181, 74, 0.1);
+}
+
+.tyre-wet {
+  border-color: var(--tyre-wet);
+  color: var(--tyre-wet);
+  background: rgba(0, 114, 198, 0.1);
+}
+
+/* Stat Card */
+.stat-card {
+  background: var(--carbon-700);
+  border: 1px solid var(--white-10);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--f1-red);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  color: var(--white-50);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Loading Animation */
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--white-10);
+  border-top-color: var(--f1-red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Animations */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes countDown {
+  from { transform: scale(1.2); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes glow {
+  0%, 100% { 
+    box-shadow: 0 0 5px var(--f1-red-glow);
+  }
+  50% { 
+    box-shadow: 0 0 20px var(--f1-red-glow), 0 0 40px rgba(225, 6, 0, 0.2);
+  }
+}
+
+@keyframes racingLine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Skeleton Loading */
+.skeleton {
+  background: linear-gradient(90deg, var(--carbon-700) 25%, var(--carbon-600) 50%, var(--carbon-700) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-sm);
+}
+
+/* Responsive Grid */
+.grid-responsive {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 1024px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .grid-4 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Fade In animation classes */
+.fade-in {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+/* Container */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
