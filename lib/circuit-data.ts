@@ -374,6 +374,22 @@ export const CIRCUIT_DETAILS: { [key: string]: CircuitDetail } = {
         trackMapSvg: 'M25,70 L25,30 Q25,18 40,18 L62,18 Q78,18 78,30 L78,55 Q78,68 65,70 L40,72 Q28,72 25,70 Z',
         color: '#FF0000',
     },
+    'bak': {
+        id: 'bak',
+        name: 'Baku City Circuit',
+        country: 'Azerbaijan',
+        city: 'Baku',
+        flagEmoji: '🇦🇿',
+        length: '6.003 km',
+        turns: 20,
+        drsZones: 2,
+        lapRecord: { time: '1:43.009', driver: 'Charles Leclerc', year: 2019 },
+        firstGP: 2016,
+        altitude: '-28m',
+        description: 'Baku City Circuit is the second longest circuit on the F1 calendar. It features a mix of wide, high-speed straights and narrow, technical sections through the historic city center, including the incredibly tight Turn 8.',
+        trackMapSvg: 'M25,82 L20,40 Q18,25 35,22 L65,18 Q80,16 82,30 L84,55 Q85,70 72,75 L45,80 Q35,82 25,82 Z',
+        color: '#0092BC',
+    },
     'rodriguez': {
         id: 'rodriguez',
         name: 'Autódromo Hermanos Rodríguez',
@@ -424,6 +440,10 @@ export function getCircuitDetail(circuitId: string): CircuitDetail | null {
         'LVG': 'vegas',
         'LOS': 'losail',
         'YAM': 'yas_marina',
+        'BAK': 'bak',
+        'baku': 'bak',
+        'azerbaijan': 'bak',
+        'singapore': 'marina_bay',
     };
 
     const mapped = mapping[circuitId];

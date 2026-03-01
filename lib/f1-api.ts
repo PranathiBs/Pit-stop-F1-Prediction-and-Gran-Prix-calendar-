@@ -192,6 +192,22 @@ const MOCK_2026_CALENDAR: Race[] = [
             circuitId: "villeneuve", circuitName: "Circuit Gilles Villeneuve", url: "",
             Location: { lat: "45.5", long: "-73.5228", locality: "Montreal", country: "Canada" }
         }
+    },
+    {
+        season: "2026", round: "17", raceName: "Azerbaijan Grand Prix",
+        date: "2026-09-20", time: "11:00:00Z",
+        Circuit: {
+            circuitId: "bak", circuitName: "Baku City Circuit", url: "",
+            Location: { lat: "40.3725", long: "49.8533", locality: "Baku", country: "Azerbaijan" }
+        }
+    },
+    {
+        season: "2026", round: "18", raceName: "Singapore Grand Prix",
+        date: "2026-10-04", time: "12:00:00Z",
+        Circuit: {
+            circuitId: "marina_bay", circuitName: "Marina Bay Street Circuit", url: "",
+            Location: { lat: "1.2914", long: "103.864", locality: "Marina Bay", country: "Singapore" }
+        }
     }
 ];
 

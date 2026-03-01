@@ -40,7 +40,7 @@ export interface HourlyForecast {
 export async function getCurrentWeather(lat: string, lon: string): Promise<WeatherData | null> {
     try {
         if (!WEATHER_API_KEY) {
-            return getMockWeather();
+            return getMockWeather(lat, lon);
         }
 
         const response = await fetch(
@@ -48,7 +48,7 @@ export async function getCurrentWeather(lat: string, lon: string): Promise<Weath
             { next: { revalidate: 600 } }
         );
 
-        if (!response.ok) return getMockWeather();
+        if (!response.ok) return getMockWeather(lat, lon);
 
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export async function getCurrentWeather(lat: string, lon: string): Promise<Weath
         };
     } catch (error) {
         console.error('Error fetching weather:', error);
-        return getMockWeather();
+        return getMockWeather(lat, lon);
     }
 }
 
@@ -180,18 +180,30 @@ export function getTrackCondition(weather: WeatherData): 'DRY' | 'DAMP' | 'WET' 
 }
 
 // Mock data when API key is not available
-function getMockWeather(): WeatherData {
+function getMockWeather(lat: string = '0', lon: string = '0'): WeatherData {
+    // Basic randomization based on lat/lon to avoid identical "static" weather
+    const l1 = parseFloat(lat) || 0;
+    const l2 = parseFloat(lon) || 0;
+    const seed = Math.abs(l1 + l2);
+
+    // Closer to equator (low lat) usually hotter
+    const baseTemp = 28 - Math.abs(l1) * 0.3;
+    const temp = Math.round(baseTemp + (seed % 10));
+
+    const conditions = ['Clear', 'Clouds', 'Rain', 'Drizzle'];
+    const condition = conditions[Math.floor(seed) % conditions.length];
+
     return {
-        temp: 24,
-        feels_like: 26,
-        humidity: 55,
-        wind_speed: 3.5,
-        wind_deg: 180,
-        description: 'partly cloudy',
-        icon: '02d',
-        main: 'Clouds',
-        rain_probability: 15,
-        clouds: 35,
+        temp,
+        feels_like: temp + 2,
+        humidity: 40 + (Math.floor(seed * 1.5) % 40),
+        wind_speed: 2 + (seed % 8),
+        wind_deg: Math.floor(seed * 10) % 360,
+        description: condition === 'Clear' ? 'sunny' : condition === 'Clouds' ? 'partly cloudy' : 'light rain',
+        icon: condition === 'Clear' ? '01d' : condition === 'Clouds' ? '02d' : '10d',
+        main: condition,
+        rain_probability: condition === 'Rain' ? 60 : condition === 'Drizzle' ? 30 : 5,
+        clouds: condition === 'Clear' ? 10 : 45,
         visibility: 10000,
     };
 }

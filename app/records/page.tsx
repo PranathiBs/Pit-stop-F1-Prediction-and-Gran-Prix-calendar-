@@ -79,17 +79,17 @@ export default function RecordsPage() {
         { record: 'Most Race Wins', holder: 'Lewis Hamilton', value: '105', iconKey: 'flag' },
         { record: 'Most Pole Positions', holder: 'Lewis Hamilton', value: '104', iconKey: 'bolt' },
         { record: 'Most Podiums', holder: 'Lewis Hamilton', value: '201', iconKey: 'medal' },
-        { record: 'Most Fastest Laps', holder: 'Lewis Hamilton', value: '67', iconKey: 'clock' },
+        { record: 'Most Fastest Laps', holder: 'Michael Schumacher', value: '77', iconKey: 'clock' },
         { record: 'Most Points in a Season', holder: 'Max Verstappen (2023)', value: '575', iconKey: 'stats' },
         { record: 'Most Wins in a Season', holder: 'Max Verstappen (2023)', value: '19', iconKey: 'bolt' },
         { record: 'Most Consecutive Wins', holder: 'Max Verstappen (2023)', value: '10', iconKey: 'stats' },
-        { record: 'Most Grand Prix Entries', holder: 'Fernando Alonso', value: '400+', iconKey: 'car' },
+        { record: 'Most Grand Prix Entries', holder: 'Fernando Alonso', value: '401+', iconKey: 'car' },
         { record: 'Youngest World Champion', holder: 'Sebastian Vettel (2010)', value: '23y 134d', iconKey: 'helmet' },
         { record: 'Most Constructor Titles', holder: 'Ferrari', value: '16', iconKey: 'constructor' },
         { record: 'Most Constructor Wins', holder: 'Ferrari', value: '243', iconKey: 'constructor' },
-        { record: 'Fastest Pit Stop', holder: 'Red Bull Racing (2019)', value: '1.82s', iconKey: 'pitstop' },
+        { record: 'Fastest Pit Stop', holder: 'McLaren (2023)', value: '1.80s', iconKey: 'pitstop' },
         { record: 'Longest Race (Distance)', holder: '2011 Canadian GP', value: '4:04:39', iconKey: 'circuit' },
-        { record: 'Most Laps Led (Career)', holder: 'Lewis Hamilton', value: '5500+', iconKey: 'flag' },
+        { record: 'Most Laps Led (Career)', holder: 'Lewis Hamilton', value: '5455', iconKey: 'flag' },
         { record: 'Highest Top Speed (Race)', holder: 'Valtteri Bottas (2016)', value: '372.5 km/h', iconKey: 'speed' },
     ];
 
@@ -168,7 +168,7 @@ export default function RecordsPage() {
                                         </div>
                                         {race.Results && (
                                             <div className={styles.raceResults}>
-                                                {race.Results.slice(0, 5).map((result) => (
+                                                {race.Results.slice(0, 10).map((result) => (
                                                     <div key={result.Driver.driverId} className={styles.resultItem}>
                                                         <span className={`${styles.resultPosition} ${parseInt(result.position) <= 3 ? styles.topResult : ''}`}>
                                                             {parseInt(result.position) <= 3 ?

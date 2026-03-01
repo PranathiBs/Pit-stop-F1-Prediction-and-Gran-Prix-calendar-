@@ -4,8 +4,8 @@
     left: 0;
     right: 0;
     height: 70px;
-    z-index: 1000;
-    background: rgba(10, 10, 10, 0.85);
+    z-index: 9999;
+    background: rgba(10, 10, 10, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -223,6 +223,13 @@
         display: block;
     }
 
+    .nav {
+        background: #0a0a0a !important;
+        /* Solid black on mobile for max contrast */
+        border-bottom: 2px solid rgba(225, 6, 0, 0.4);
+        box-shadow: 0 4px 25px rgba(0, 0, 0, 0.8);
+    }
+
     .links {
         position: fixed;
         top: 70px;
@@ -254,7 +261,11 @@
 
     .logoText {
         font-size: 1.1rem;
-        letter-spacing: 3px;
+        letter-spacing: 2px;
+    }
+
+    .logo {
+        gap: 6px;
     }
 
     .liveIndicator {
