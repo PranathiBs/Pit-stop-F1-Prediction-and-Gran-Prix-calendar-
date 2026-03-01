@@ -119,7 +119,12 @@ const MOCK_2026_CALENDAR: Race[] = [
         Circuit: {
             circuitId: "albert_park", circuitName: "Albert Park Grand Prix Circuit", url: "",
             Location: { lat: "-37.8497", long: "144.968", locality: "Melbourne", country: "Australia" }
-        }
+        },
+        Results: [
+            { position: "1", positionText: "1", points: "25", Driver: { givenName: "Lando", familyName: "Norris", code: "NOR", driverId: "norris", permanentNumber: "4", url: "", dateOfBirth: "", nationality: "British" }, Constructor: { name: "McLaren", constructorId: "mclaren", nationality: "", url: "" }, grid: "1", laps: "58", status: "Finished", Time: { millis: "5400000", time: "1:30:00.000" }, number: "4" },
+            { position: "2", positionText: "2", points: "18", Driver: { givenName: "Max", familyName: "Verstappen", code: "VER", driverId: "verstappen", permanentNumber: "1", url: "", dateOfBirth: "", nationality: "Dutch" }, Constructor: { name: "Red Bull", constructorId: "red_bull", nationality: "", url: "" }, grid: "2", laps: "58", status: "Finished", Time: { millis: "5405000", time: "+5.000s" }, number: "1" },
+            { position: "3", positionText: "3", points: "15", Driver: { givenName: "Charles", familyName: "Leclerc", code: "LEC", driverId: "leclerc", permanentNumber: "16", url: "", dateOfBirth: "", nationality: "Monegasque" }, Constructor: { name: "Ferrari", constructorId: "ferrari", nationality: "", url: "" }, grid: "3", laps: "58", status: "Finished", Time: { millis: "5412000", time: "+12.000s" }, number: "16" }
+        ]
     },
     {
         season: "2026", round: "2", raceName: "Chinese Grand Prix",
@@ -127,7 +132,12 @@ const MOCK_2026_CALENDAR: Race[] = [
         Circuit: {
             circuitId: "shanghai", circuitName: "Shanghai International Circuit", url: "",
             Location: { lat: "31.3389", long: "121.22", locality: "Shanghai", country: "China" }
-        }
+        },
+        Results: [
+            { position: "1", positionText: "1", points: "25", Driver: { givenName: "Max", familyName: "Verstappen", code: "VER", driverId: "verstappen", permanentNumber: "1", url: "", dateOfBirth: "", nationality: "Dutch" }, Constructor: { name: "Red Bull", constructorId: "red_bull", nationality: "", url: "" }, grid: "1", laps: "56", status: "Finished", Time: { millis: "5400000", time: "1:28:30.000" }, number: "1" },
+            { position: "2", positionText: "2", points: "18", Driver: { givenName: "Lewis", familyName: "Hamilton", code: "HAM", driverId: "hamilton", permanentNumber: "44", url: "", dateOfBirth: "", nationality: "British" }, Constructor: { name: "Ferrari", constructorId: "ferrari", nationality: "", url: "" }, grid: "3", laps: "56", status: "Finished", Time: { millis: "5408000", time: "+8.000s" }, number: "44" },
+            { position: "3", positionText: "3", points: "15", Driver: { givenName: "Oscar", familyName: "Piastri", code: "PIA", driverId: "piastri", permanentNumber: "81", url: "", dateOfBirth: "", nationality: "Australian" }, Constructor: { name: "McLaren", constructorId: "mclaren", nationality: "", url: "" }, grid: "2", laps: "56", status: "Finished", Time: { millis: "5415000", time: "+15.000s" }, number: "81" }
+        ]
     },
     {
         season: "2026", round: "3", raceName: "Japanese Grand Prix",
@@ -135,7 +145,12 @@ const MOCK_2026_CALENDAR: Race[] = [
         Circuit: {
             circuitId: "suzuka", circuitName: "Suzuka Circuit", url: "",
             Location: { lat: "34.8431", long: "136.541", locality: "Suzuka", country: "Japan" }
-        }
+        },
+        Results: [
+            { position: "1", positionText: "1", points: "25", Driver: { givenName: "George", familyName: "Russell", code: "RUS", driverId: "russell", permanentNumber: "63", url: "", dateOfBirth: "", nationality: "British" }, Constructor: { name: "Mercedes", constructorId: "mercedes", nationality: "", url: "" }, grid: "2", laps: "53", status: "Finished", Time: { millis: "5400000", time: "1:32:00.000" }, number: "63" },
+            { position: "2", positionText: "2", points: "18", Driver: { givenName: "Charles", familyName: "Leclerc", code: "LEC", driverId: "leclerc", permanentNumber: "16", url: "", dateOfBirth: "", nationality: "Monegasque" }, Constructor: { name: "Ferrari", constructorId: "ferrari", nationality: "", url: "" }, grid: "1", laps: "53", status: "Finished", Time: { millis: "5402000", time: "+2.000s" }, number: "16" },
+            { position: "3", positionText: "3", points: "15", Driver: { givenName: "Lando", familyName: "Norris", code: "NOR", driverId: "norris", permanentNumber: "4", url: "", dateOfBirth: "", nationality: "British" }, Constructor: { name: "McLaren", constructorId: "mclaren", nationality: "", url: "" }, grid: "4", laps: "53", status: "Finished", Time: { millis: "5410000", time: "+10.000s" }, number: "4" }
+        ]
     },
     {
         season: "2026", round: "4", raceName: "Bahrain Grand Prix",

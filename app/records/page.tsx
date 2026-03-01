@@ -54,6 +54,13 @@ export default function RecordsPage() {
 
             setResults(resultsData);
 
+            // AUTO-SYNC: Store these results in Supabase automatically
+            if (resultsData && resultsData.length > 0) {
+                import('@/lib/supabase').then(mod => {
+                    mod.syncRaceHistory(resultsData);
+                });
+            }
+
             const lapData: FastestLapInfo[] = fastData.map((race: Race) => {
                 const res = race.Results?.[0];
                 return {
@@ -168,21 +175,25 @@ export default function RecordsPage() {
                                         </div>
                                         {race.Results && (
                                             <div className={styles.raceResults}>
-                                                {race.Results.slice(0, 10).map((result) => (
-                                                    <div key={result.Driver.driverId} className={styles.resultItem}>
-                                                        <span className={`${styles.resultPosition} ${parseInt(result.position) <= 3 ? styles.topResult : ''}`}>
-                                                            {parseInt(result.position) <= 3 ?
-                                                                <MedalIcon size={14} color={parseInt(result.position) === 1 ? '#FFD700' : parseInt(result.position) === 2 ? '#C0C0C0' : '#CD7F32'} /> :
-                                                                `P${result.position}`
-                                                            }
-                                                        </span>
-                                                        <div className={styles.resultTeamBar} style={{ background: getTeamColor(result.Constructor.constructorId) }} />
-                                                        <span className={styles.resultDriverName}>{result.Driver.code || result.Driver.familyName.substring(0, 3).toUpperCase()}</span>
-                                                        <span className={styles.resultTeamName}>{result.Constructor.name}</span>
-                                                        <span className={styles.resultTime}>{result.Time?.time || result.status}</span>
-                                                        <span className={styles.resultPts}>+{result.points}</span>
-                                                    </div>
-                                                ))}
+                                                {race.Results.slice(0, 10).map((result) => {
+                                                    const pos = parseInt(result.position);
+                                                    const podiumClass = pos === 1 ? styles.podium1 : pos === 2 ? styles.podium2 : pos === 3 ? styles.podium3 : '';
+                                                    return (
+                                                        <div key={result.Driver.driverId} className={`${styles.resultItem} ${podiumClass}`}>
+                                                            <span className={`${styles.resultPosition} ${pos <= 3 ? styles.topResult : ''}`}>
+                                                                {pos <= 3 ?
+                                                                    <MedalIcon size={14} color={pos === 1 ? '#FFD700' : pos === 2 ? '#C0C0C0' : '#CD7F32'} /> :
+                                                                    `P${result.position}`
+                                                                }
+                                                            </span>
+                                                            <div className={styles.resultTeamBar} style={{ background: getTeamColor(result.Constructor.constructorId) }} />
+                                                            <span className={styles.resultDriverName}>{result.Driver.code || result.Driver.familyName.substring(0, 3).toUpperCase()}</span>
+                                                            <span className={styles.resultTeamName}>{result.Constructor.name}</span>
+                                                            <span className={styles.resultTime}>{result.Time?.time || result.status}</span>
+                                                            <span className={styles.resultPts} style={{ color: pos <= 3 ? (pos === 1 ? '#FFD700' : pos === 2 ? '#C0C0C0' : '#CD7F32') : 'inherit' }}>+{result.points}</span>
+                                                        </div>
+                                                    );
+                                                })}
                                             </div>
                                         )}
                                     </div>

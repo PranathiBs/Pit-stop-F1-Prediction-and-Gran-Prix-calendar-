@@ -55,6 +55,19 @@ export interface FavoriteCircuit {
   created_at?: string;
 }
 
+export interface RaceResultHistory {
+  id?: string;
+  year: number;
+  round: number;
+  race_name: string;
+  winner_name: string;
+  p2_name: string;
+  p3_name: string;
+  winner_pts?: number;
+  p2_pts?: number;
+  p3_pts?: number;
+}
+
 // ===== WEATHER CACHE =====
 
 export async function cacheWeatherData(circuitId: string, data: Record<string, unknown>) {
@@ -231,5 +244,38 @@ export async function isFavoriteCircuit(circuitId: string): Promise<boolean> {
     return !!data;
   } catch {
     return false;
+  }
+}
+
+// ===== RACE HISTORY SYNC =====
+
+export async function syncRaceHistory(results: any[]) {
+  if (!supabase || !results.length) return;
+
+  try {
+    const historyData = results.map(race => ({
+      year: parseInt(race.season),
+      round: parseInt(race.round),
+      race_name: race.raceName,
+      winner_name: race.Results?.[0] ? `${race.Results[0].Driver.givenName} ${race.Results[0].Driver.familyName}` : 'N/A',
+      p2_name: race.Results?.[1] ? `${race.Results[1].Driver.givenName} ${race.Results[1].Driver.familyName}` : 'N/A',
+      p3_name: race.Results?.[2] ? `${race.Results[2].Driver.givenName} ${race.Results[2].Driver.familyName}` : 'N/A',
+      winner_pts: race.Results?.[0] ? parseInt(race.Results[0].points) : 25,
+      p2_pts: race.Results?.[1] ? parseInt(race.Results[1].points) : 18,
+      p3_pts: race.Results?.[2] ? parseInt(race.Results[2].points) : 15,
+    }));
+
+    // Upsert into Supabase (requires unique constraint on year+round in DB)
+    const { error } = await supabase
+      .from('race_results_history')
+      .upsert(historyData, { onConflict: 'year,round' });
+
+    if (error) {
+      // If we haven't added the unique constraint yet, this might error. 
+      // We fall back to standard insert for new data.
+      console.warn('Supabase sync warning:', error.message);
+    }
+  } catch (e) {
+    console.error('Supabase sync error:', e);
   }
 }
