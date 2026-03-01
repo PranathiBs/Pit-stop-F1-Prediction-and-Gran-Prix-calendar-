@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏎️ Pit Stop: F1 Prediction Platform
 
-## Getting Started
+A high-performance, full-stack Formula 1 prediction application built with **Next.js 15**, **React 19**, and **Supabase**. Compete with fans worldwide, predict race outcomes, and climb the leaderboard with a sleek cyberpunk-inspired UI.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)
+![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
+![Supabase](https://img.shields.io/badge/Supabase-Database-green?style=for-the-badge&logo=supabase)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=for-the-badge&logo=typescript)
 
+---
+
+## 🚀 Features
+
+- **Dynamic Race Calendar**: Stay updated with the latest F1 season schedule.
+- **Podium Predictions**: Cast your votes for the top 3 finishers, fastest lap, and more.
+- **Cyberpunk UI**: A stunning, responsive interface with neon glows, glassmorphism, and smooth animations.
+- **Real-time Leaderboards**: Track your performance against other predictors globally.
+- **Secure Authentication**: Built-in user management powered by Supabase Auth.
+- **Mobile Responsive**: Perfect for making last-minute predictions on your phone.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: Next.js 15 (App Router), React 19, Tailwind CSS
+- **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
+- **Deployment**: Vercel
+- **Icons**: Lucide React
+
+---
+
+## 📦 Getting Started
+
+### 1. Clone the repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/your-username/pit-stop.git
+cd pit-stop
 ```
 
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Set up Environment Variables
+Create a `.env.local` file in the root directory and add your Supabase credentials:
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### 4. Run the development server
+```bash
+npm run dev
+```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🏁 Deployment
 
-## Learn More
+The easiest way to deploy this project is via [Vercel](https://vercel.com). Simply connect your GitHub repository and Vercel will handle the rest, including automatic builds on every push to the `master` branch.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✨ Developed by
+**[Your Name]** – *F1 Enthusiast & Developer*
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Licensed under the [MIT License](LICENSE).
