@@ -1,6 +1,4 @@
-// F1 News & Updates Service
-// Aggregates live F1 data from APIs + curated 2026 regulation updates
-// Auto-refreshes after every race via polling
+import Parser from 'rss-parser';
 
 export interface F1NewsItem {
     id: string;
@@ -10,9 +8,10 @@ export interface F1NewsItem {
     date: string;
     source: string;
     url?: string;
+    imageUrl?: string;
     teamTag?: string;
     isBreaking?: boolean;
-    extraDetails?: string; // full details for expanded view
+    extraDetails?: string;
 }
 
 export interface NewsResponse {
@@ -21,10 +20,88 @@ export interface NewsResponse {
     nextRaceDate?: string;
 }
 
+const parser = new Parser({
+    customFields: {
+        item: [
+            ['media:thumbnail', 'thumbnail'],
+            ['media:content', 'mediaContent'],
+        ],
+    }
+});
+
 // Fetch all updates — returns items + metadata
 export async function getLatestUpdates(): Promise<NewsResponse> {
     const updates: F1NewsItem[] = [];
     const now = new Date();
+
+    // ===== 0. OFFICIAL RSS NEWS (BBC, Sky, Autosport) =====
+    // ===== 0. OFFICIAL RSS NEWS (BBC, Sky, Autosport) =====
+    try {
+        const [bbcFeed, skyFeed, autosportFeed] = await Promise.all([
+            parser.parseURL('https://feeds.bbci.co.uk/sport/formula1/rss.xml').catch(e => { console.error('BBC Error:', e); return { items: [] }; }),
+            parser.parseURL('https://www.skysports.com/rss/12433').catch(e => { console.error('Sky Error:', e); return { items: [] }; }),
+            parser.parseURL('https://www.autosport.com/rss/f1/').catch(e => { console.error('Autosport Error:', e); return { items: [] }; })
+        ]);
+
+        const allItems = [...bbcFeed.items, ...skyFeed.items, ...autosportFeed.items];
+        // Sort by date
+        allItems.sort((a, b) => new Date(b.pubDate || 0).getTime() - new Date(a.pubDate || 0).getTime());
+
+        allItems.forEach(item => {
+            let imageUrl = '';
+            // Try different ways to find the thumbnail (prefer higher res mediaContent)
+            const rawItem = item as any;
+
+            // Comprehensive check for BBC/Sky/Common RSS image tags
+            if (rawItem.mediaContent?.[0]?.url) {
+                imageUrl = rawItem.mediaContent[0].url;
+            } else if (rawItem.mediaContent?.$?.url) {
+                imageUrl = rawItem.mediaContent.$.url;
+            } else if (rawItem.thumbnail?.$?.url) {
+                imageUrl = rawItem.thumbnail.$.url;
+            } else if (rawItem.enclosure?.url) {
+                imageUrl = rawItem.enclosure.url;
+            } else if (rawItem['media:thumbnail']?.$?.url) {
+                imageUrl = rawItem['media:thumbnail'].$.url;
+            } else if (rawItem['media:content']?.$?.url) {
+                imageUrl = rawItem['media:content'].$.url;
+            }
+
+            if (imageUrl) {
+                // BBC thumbs are often /240/ or /480/ - scale to 1024 for "Pro" look
+                imageUrl = imageUrl.replace('/240/', '/1024/').replace('/480/', '/1024/');
+                // Ensure it's https
+                if (imageUrl.startsWith('http:')) imageUrl = imageUrl.replace('http:', 'https:');
+            }
+
+            // Smart category detection from title + content
+            const text = `${item.title || ''} ${item.contentSnippet || ''}`.toLowerCase();
+            let category: F1NewsItem['category'] = 'official';
+
+            if (/regulat|rule|fia|ban|penalty|steward|cost.?cap|budget|technical.?directive/i.test(text)) {
+                category = 'regulation';
+            } else if (/transfer|sign|contract|move|join|leave|replac|seat|lineup|line-up|driver.?market/i.test(text)) {
+                category = 'transfer';
+            } else if (/race|grand.?prix|gp|winner|podium|result|finish|qualif|sprint|grid|start|lap|overtake|crash|retire|dnf|safety.?car/i.test(text)) {
+                category = 'race';
+            } else if (/engine|power.?unit|aero|technical|upgrade|floor|wing|diffuser|sidepod|tyre|tire|brake|suspen|setup|telemetry/i.test(text)) {
+                category = 'technical';
+            }
+
+            updates.push({
+                id: item.guid || item.link || Math.random().toString(),
+                title: item.title || 'F1 Update',
+                summary: item.contentSnippet || item.content || '',
+                category: category,
+                date: item.pubDate ? new Date(item.pubDate).toISOString() : now.toISOString(),
+                source: item.link?.includes('skysports') ? 'Sky Sports' : item.link?.includes('autosport') ? 'Autosport' : 'BBC Sport',
+                url: item.link,
+                imageUrl: imageUrl,
+            });
+        });
+    } catch (error) {
+        console.error('Error fetching RSS news:', error);
+    }
 
     // ===== 1. LATEST RACE RESULTS =====
     try {
@@ -301,7 +378,13 @@ export async function getLatestUpdates(): Promise<NewsResponse> {
         },
     ];
 
-    updates.push(...regulationUpdates);
+    // Always include 2026 regulation updates (they're unique static content)
+    const existingIds = new Set(updates.map(u => u.id));
+    regulationUpdates.forEach(reg => {
+        if (!existingIds.has(reg.id)) {
+            updates.push(reg);
+        }
+    });
 
     // Sort by date (newest first), breaking items get priority
     updates.sort((a, b) => {
@@ -318,13 +401,13 @@ export async function getLatestUpdates(): Promise<NewsResponse> {
 }
 
 import {
-    GavelIcon,
-    TransferIcon,
-    TrophyIcon,
-    TechnicalIcon,
-    FlashIcon,
-    OfficialIcon
-} from '@/components/Icons';
+    Gavel,
+    RefreshCw,
+    Trophy,
+    Settings,
+    Zap,
+    Shield
+} from 'lucide-react';
 import { ElementType } from 'react';
 
 // Get category badge info and icons
@@ -335,12 +418,12 @@ export function getCategoryDetails(category: F1NewsItem['category']): {
     icon: ElementType;
 } {
     const info: { [key: string]: { label: string; color: string; bg: string; icon: ElementType } } = {
-        regulation: { label: 'REGULATION', color: '#FFC906', bg: 'rgba(255, 201, 6, 0.12)', icon: GavelIcon },
-        transfer: { label: 'TRANSFER', color: '#F58020', bg: 'rgba(245, 128, 32, 0.12)', icon: TransferIcon },
-        race: { label: 'RACE RESULT', color: '#E10600', bg: 'rgba(225, 6, 0, 0.12)', icon: TrophyIcon },
-        technical: { label: 'TECHNICAL', color: '#2293D1', bg: 'rgba(34, 147, 209, 0.12)', icon: TechnicalIcon },
-        breaking: { label: 'BREAKING', color: '#E10600', bg: 'rgba(225, 6, 0, 0.2)', icon: FlashIcon },
-        official: { label: 'OFFICIAL', color: '#39B54A', bg: 'rgba(57, 181, 74, 0.12)', icon: OfficialIcon },
+        regulation: { label: 'REGULATION', color: '#FFC906', bg: 'rgba(255, 201, 6, 0.12)', icon: Gavel },
+        transfer: { label: 'TRANSFER', color: '#F58020', bg: 'rgba(245, 128, 32, 0.12)', icon: RefreshCw },
+        race: { label: 'RACE RESULT', color: '#E10600', bg: 'rgba(225, 6, 0, 0.12)', icon: Trophy },
+        technical: { label: 'TECHNICAL', color: '#2293D1', bg: 'rgba(34, 147, 209, 0.12)', icon: Settings },
+        breaking: { label: 'BREAKING', color: '#E10600', bg: 'rgba(225, 6, 0, 0.2)', icon: Zap },
+        official: { label: 'OFFICIAL', color: '#39B54A', bg: 'rgba(57, 181, 74, 0.12)', icon: Shield },
     };
     return info[category] || info.official;
 }
@@ -348,7 +431,7 @@ export function getCategoryDetails(category: F1NewsItem['category']): {
 
 // Calculate auto-refresh interval based on next race
 export function getRefreshInterval(nextRaceDate?: string): number {
-    if (!nextRaceDate) return 5 * 60 * 1000; // 5 min default
+    if (!nextRaceDate) return 60 * 1000; // 1 min default
 
     const now = Date.now();
     const raceTime = new Date(nextRaceDate).getTime();
@@ -361,5 +444,5 @@ export function getRefreshInterval(nextRaceDate?: string): number {
     // Just after race (within 2 hours after)
     if (diff > -2 * 60 * 60 * 1000 && diff <= 0) return 10 * 1000; // 10 seconds
 
-    return 3 * 60 * 1000; // 3 min otherwise
+    return 30 * 1000; // 30 seconds otherwise (keep it snappy)
 }

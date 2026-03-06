@@ -1,6 +1,6 @@
 .page {
     min-height: 100vh;
-    padding: 40px 0 80px;
+    padding: 100px 0 80px;
 }
 
 .container {
@@ -85,13 +85,15 @@
     align-items: center;
     gap: 4px;
     padding: 14px 8px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.30);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.7);
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     transition: all 0.25s;
     font-family: inherit;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 .circuitBtn:hover {
@@ -123,11 +125,14 @@
 
 /* Weather Panel */
 .weatherPanel {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
     padding: 24px;
     margin-bottom: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .weatherPanelHeader {
@@ -309,11 +314,14 @@
 
 /* Track Info */
 .trackInfo {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 14px;
     padding: 24px;
     margin-bottom: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
 }
 
 .trackGrid {
@@ -329,7 +337,8 @@
     gap: 4px;
     padding: 14px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
 }
 
@@ -372,11 +381,14 @@
 }
 
 .strategyCard {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.40);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 14px;
     padding: 24px;
     transition: all 0.3s;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .strategyCard:hover {
@@ -631,11 +643,14 @@
 /* ─── ML Race Prediction Grid ─────────────────────────────── */
 
 .mlSection {
-    background: rgba(255, 215, 0, 0.04);
-    border: 1px solid rgba(255, 215, 0, 0.18);
+    background: rgba(20, 16, 0, 0.6);
+    border: 1px solid rgba(255, 215, 0, 0.25);
     border-radius: 14px;
     padding: 22px;
     margin-bottom: 24px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 215, 0, 0.05);
 }
 
 .mlHeader {

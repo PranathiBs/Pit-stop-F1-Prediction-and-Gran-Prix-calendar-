@@ -8,10 +8,25 @@ import {
 } from '@/lib/f1-api';
 import { getTeamColor } from '@/lib/team-colors';
 import {
-    TrophyIcon, FlagIcon, BoltIcon, MedalIcon, ClockIcon,
-    StatsIcon, RacingCarIcon, SpeedometerIcon, HelmetIcon,
-    ConstructorIcon, PitStopIcon, CircuitIcon
-} from '@/components/Icons';
+    Trophy, Flag, Zap, Award, Clock, BarChart3,
+    Car, Gauge, Shield, Users, Timer, Map
+} from 'lucide-react';
+
+
+const recordIcons: { [key: string]: React.ReactNode } = {
+    'trophy': <Trophy size={20} color="#FFD700" />,
+    'flag': <Flag size={20} color="#E10600" />,
+    'bolt': <Zap size={20} color="#FFC906" />,
+    'medal': <Award size={20} color="#FFD700" />,
+    'clock': <Clock size={20} color="#2293D1" />,
+    'stats': <BarChart3 size={20} color="#39B54A" />,
+    'car': <Car size={20} color="#E10600" />,
+    'speed': <Gauge size={20} color="#F58020" />,
+    'helmet': <Shield size={20} color="#E10600" />,
+    'constructor': <Users size={20} color="#E10600" />,
+    'pitstop': <Timer size={20} color="#39B54A" />,
+    'circuit': <Map size={20} color="#2293D1" />,
+};
 
 interface FastestLapInfo {
     raceName: string;
@@ -21,21 +36,6 @@ interface FastestLapInfo {
     time: string;
     speed: string;
 }
-
-const recordIcons: { [key: string]: React.ReactNode } = {
-    'trophy': <TrophyIcon size={20} color="#FFD700" />,
-    'flag': <FlagIcon size={20} color="#E10600" />,
-    'bolt': <BoltIcon size={20} color="#FFC906" />,
-    'medal': <MedalIcon size={20} color="#FFD700" />,
-    'clock': <ClockIcon size={20} color="#2293D1" />,
-    'stats': <StatsIcon size={20} color="#39B54A" />,
-    'car': <RacingCarIcon size={20} color="#E10600" />,
-    'speed': <SpeedometerIcon size={20} color="#F58020" />,
-    'helmet': <HelmetIcon size={20} color="#E10600" />,
-    'constructor': <ConstructorIcon size={20} color="#E10600" />,
-    'pitstop': <PitStopIcon size={20} color="#39B54A" />,
-    'circuit': <CircuitIcon size={20} color="#2293D1" />,
-};
 
 export default function RecordsPage() {
     const [fastestLaps, setFastestLaps] = useState<FastestLapInfo[]>([]);
@@ -92,7 +92,7 @@ export default function RecordsPage() {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <div className={styles.headerLeft}>
-                        <div className={styles.titleIcon}><StatsIcon size={28} color="#E10600" /></div>
+                        <div className={styles.titleIcon}><BarChart3 size={28} color="#E10600" /></div>
                         <div>
                             <h1 className={styles.title}>F1 Records</h1>
                             <p className={styles.subtitle}>Fastest laps and all-time world records</p>
@@ -120,14 +120,14 @@ export default function RecordsPage() {
                         className={`${styles.tab} ${activeTab === 'fastest' ? styles.tabActive : ''}`}
                         onClick={() => setActiveTab('fastest')}
                     >
-                        <SpeedometerIcon size={16} color={activeTab === 'fastest' ? '#E10600' : 'currentColor'} />
+                        <Gauge size={16} color={activeTab === 'fastest' ? '#E10600' : 'currentColor'} />
                         <span>Fastest Laps</span>
                     </button>
                     <button
                         className={`${styles.tab} ${activeTab === 'history' ? styles.tabActive : ''}`}
                         onClick={() => setActiveTab('history')}
                     >
-                        <TrophyIcon size={16} color={activeTab === 'history' ? '#E10600' : 'currentColor'} />
+                        <Trophy size={16} color={activeTab === 'history' ? '#E10600' : 'currentColor'} />
                         <span>All-Time Records</span>
                     </button>
                 </div>
@@ -145,7 +145,7 @@ export default function RecordsPage() {
                                     {fastestLaps.map((lap, i) => (
                                         <div key={i} className={styles.fastestCard}>
                                             <div className={styles.fastestHeader}>
-                                                <SpeedometerIcon size={14} color="rgba(255,255,255,0.3)" />
+                                                <Gauge size={14} color="rgba(255,255,255,0.3)" />
                                                 <span className={styles.fastestRace}>{lap.raceName}</span>
                                             </div>
                                             <div className={styles.fastestDriver}>
@@ -158,13 +158,13 @@ export default function RecordsPage() {
                                             <div className={styles.fastestStats}>
                                                 <div>
                                                     <span className={styles.fastestLabel}>
-                                                        <ClockIcon size={10} color="rgba(255,255,255,0.3)" /> Lap Time
+                                                        <Clock size={10} color="rgba(255,255,255,0.3)" /> Lap Time
                                                     </span>
                                                     <span className={styles.fastestTime}>{lap.time}</span>
                                                 </div>
                                                 <div>
                                                     <span className={styles.fastestLabel}>
-                                                        <SpeedometerIcon size={10} color="rgba(255,255,255,0.3)" /> Avg Speed
+                                                        <Gauge size={10} color="rgba(255,255,255,0.3)" /> Avg Speed
                                                     </span>
                                                     <span className={styles.fastestSpeed}>{lap.speed} km/h</span>
                                                 </div>
@@ -174,7 +174,7 @@ export default function RecordsPage() {
                                 </div>
                                 {fastestLaps.length === 0 && (
                                     <div className={styles.emptyState}>
-                                        <SpeedometerIcon size={48} color="rgba(255,255,255,0.2)" />
+                                        <Gauge size={48} color="rgba(255,255,255,0.2)" />
                                         <h3 className={styles.emptyTitle}>No Fastest Lap Data Yet</h3>
                                         <p className={styles.emptyDesc}>Fastest lap records will appear here once races begin.</p>
                                     </div>

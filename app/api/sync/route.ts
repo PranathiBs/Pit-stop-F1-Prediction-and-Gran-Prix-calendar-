@@ -18,6 +18,9 @@ const supa = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVIC
     )
     : null;
 
+let lastSyncTime = 0;
+const SYNC_COOLDOWN = 5 * 60 * 1000; // 5 minutes
+
 async function jolpica(path: string) {
     const r = await fetch(`${JOLPICA_BASE}${path}`, { next: { revalidate: 0 } });
     if (!r.ok) throw new Error(`Jolpica ${r.status}`);
@@ -34,6 +37,17 @@ export async function GET(req: NextRequest) {
     if (!supa) {
         return NextResponse.json({ error: 'Supabase not configured' }, { status: 500 });
     }
+
+    const now = Date.now();
+    const force = req.nextUrl.searchParams.get('force') === 'true';
+    if (!force && (now - lastSyncTime) < SYNC_COOLDOWN) {
+        return NextResponse.json({
+            ok: true,
+            message: 'Sync recently performed. Skipping.',
+            cooldown_remaining: Math.ceil((SYNC_COOLDOWN - (now - lastSyncTime)) / 1000)
+        });
+    }
+    lastSyncTime = now;
 
     const yearStr = req.nextUrl.searchParams.get('year') ?? String(new Date().getFullYear() - 1);
     const year = parseInt(yearStr);

@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Trophy, BarChart3, Radio, RefreshCw, Filter, Calendar, Users, Briefcase, Activity, Clock, Medal } from 'lucide-react';
 import styles from './history.module.css';
-import {
-    getHistoricalPodiums,
-    calculateDriverConsistencyScores,
-    LIVE_POLL_INTERVAL_MS,
-    type PodiumEntry,
-    type DriverConsistency,
-} from '@/lib/f1-history';
+import { getHistoricalPodiums, calculateDriverConsistencyScores, LIVE_POLL_INTERVAL_MS, type PodiumEntry, type DriverConsistency } from '@/lib/f1-history';
 import { getLiveData, type LiveData } from '@/lib/ml-engine';
 import { getTeamColor } from '@/lib/team-colors';
+import { getTeamLogo } from '@/lib/team-logos';
+
+// ... (skipping icons and helper functions)
+
 
 // ─── Icons (inline SVG to avoid extra deps) ───────────────────────────────
 
@@ -68,7 +68,7 @@ const MEDAL: Record<number, string> = {
     3: '#CD7F32',   // Bronze
 };
 
-const MEDAL_LABEL: Record<number, string> = { 1: '🥇', 2: '🥈', 3: '🥉' };
+const MEDAL_LABEL: Record<number, string> = { 1: 'P1', 2: 'P2', 3: 'P3' };
 
 // ─── Helper ────────────────────────────────────────────────────────────────
 
@@ -194,392 +194,268 @@ export default function HistoryPage() {
 
                 {/* ─── Tabs ───────────────────────────────────────────────── */}
                 <div className={styles.tabs}>
-                    {(['podiums', 'consistency', 'live'] as TabId[]).map(t => (
-                        <button
-                            key={t}
-                            className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
-                            onClick={() => setTab(t)}
-                        >
-                            {t === 'podiums' && <><IconPodium size={18} /> Podiums</>}
-                            {t === 'consistency' && <><IconChart size={18} /> Consistency</>}
-                            {t === 'live' && <><IconRadio size={18} /> Live Race</>}
-                        </button>
-                    ))}
+                    {(['podiums', 'consistency', 'live'] as TabId[]).map(t => {
+                        const Icon = t === 'podiums' ? Trophy : t === 'consistency' ? BarChart3 : Radio;
+                        return (
+                            <button
+                                key={t}
+                                className={`${styles.tab} ${tab === t ? styles.tabActive : ''}`}
+                                onClick={() => setTab(t)}
+                            >
+                                <Icon size={18} />
+                                <span>{t.charAt(0).toUpperCase() + t.slice(1)}</span>
+                                {tab === t && <motion.div layoutId="tab-line" className={styles.tabLine} />}
+                            </button>
+                        );
+                    })}
                 </div>
 
-                {/* ══════════════════════════════════════════════════════════
-            TAB: PODIUMS
-        ══════════════════════════════════════════════════════════ */}
-                {tab === 'podiums' && (
-                    <>
-                        {/* Controls */}
-                        <div className={styles.controls}>
-                            <div className={styles.controlGroup}>
-                                <IconFilter size={14} />
-                                <label className={styles.controlLabel}>Years back</label>
-                                <div className={styles.pillGroup}>
-                                    {YEARS_OPT.map(y => (
-                                        <button
-                                            key={y}
-                                            className={`${styles.pill} ${yearsBack === y ? styles.pillActive : ''}`}
-                                            onClick={() => setYears(y)}
+                <AnimatePresence mode="wait">
+                    {tab === 'podiums' && (
+                        <motion.div
+                            key="podiums"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                        >
+                            <div className={styles.controls}>
+                                <div className={styles.controlGroup}>
+                                    <Filter size={14} />
+                                    <label className={styles.controlLabel}>Years back</label>
+                                    <div className={styles.pillGroup}>
+                                        {YEARS_OPT.map(y => (
+                                            <button
+                                                key={y}
+                                                className={`${styles.pill} ${yearsBack === y ? styles.pillActive : ''}`}
+                                                onClick={() => setYears(y)}
+                                            >
+                                                {y}Y
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <button className={styles.refreshBtn} onClick={fetchPodiums}>
+                                    <RefreshCw size={14} /> Refresh
+                                </button>
+                            </div>
+
+                            {loading ? (
+                                <div className={styles.loadingState}>
+                                    <div className={styles.spinner} />
+                                    <p className="text-mono">SYNCING ARCHIVES…</p>
+                                </div>
+                            ) : (
+                                <motion.div
+                                    className={styles.podiumGrid}
+                                    initial="hidden"
+                                    animate="visible"
+                                    variants={{
+                                        hidden: { opacity: 0 },
+                                        visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
+                                    }}
+                                >
+                                    {filteredPodiums.map((p, i) => {
+                                        const medalColor = MEDAL[p.position];
+                                        return (
+                                            <motion.div
+                                                key={`${p.season}-${p.round}-${p.position}`}
+                                                variants={{
+                                                    hidden: { opacity: 0, scale: 0.95 },
+                                                    visible: { opacity: 1, scale: 1 }
+                                                }}
+                                                className={`${styles.podiumCard} glass-card`}
+                                            >
+                                                <div className={styles.cardHeader}>
+                                                    <div className={styles.rankBadge} style={{ color: medalColor }}>
+                                                        {MEDAL_LABEL[p.position]}
+                                                    </div>
+                                                    <div className={styles.raceMeta}>
+                                                        <span className={styles.seasonBadge}>{p.season}</span>
+                                                        <span className={`${styles.raceDate} text-mono`}>{new Date(p.date).toLocaleDateString()}</span>
+                                                    </div>
+                                                </div>
+                                                <h3 className={styles.raceTitle}>{p.raceName}</h3>
+                                                <div className={styles.driverInfo}>
+                                                    <span className={`${styles.driverCode} text-mono`}>{p.driverCode}</span>
+                                                    <span className={styles.driverName}>{p.driverName}</span>
+                                                </div>
+                                                <div className={styles.teamMeta}>
+                                                    <span className={styles.teamBar} style={{ background: getTeamColor(p.constructorId) }} />
+                                                    <span className={styles.teamName}>{p.constructorName}</span>
+                                                </div>
+                                                <div className={styles.cardFooter}>
+                                                    <span className={`${styles.raceTime} text-mono`}>{p.time}</span>
+                                                    <span className={styles.pointsBadge}>{p.points} PTS</span>
+                                                </div>
+                                            </motion.div>
+                                        );
+                                    })}
+                                </motion.div>
+                            )}
+                        </motion.div>
+                    )}
+
+                    {tab === 'consistency' && (
+                        <motion.div
+                            key="consistency"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className={styles.consistencyContent}
+                        >
+                            <motion.div
+                                className={styles.consistencyGrid}
+                                initial="hidden"
+                                animate="visible"
+                                variants={{
+                                    hidden: { opacity: 0 },
+                                    visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
+                                }}
+                            >
+                                {consistency.map((d, i) => (
+                                    <motion.div
+                                        key={d.driverId}
+                                        variants={{
+                                            hidden: { opacity: 0, x: -20 },
+                                            visible: { opacity: 1, x: 0 }
+                                        }}
+                                        className={`${styles.consistencyCard} glass-card`}
+                                    >
+                                        <div className={styles.driverRank}>
+                                            <span className={styles.rankNum}>#{i + 1}</span>
+                                            <div className={styles.teamLogoWrapMini}>
+                                                <img src={getTeamLogo(d.constructorId)} alt={d.constructorName} className={styles.teamLogo} />
+                                            </div>
+                                            <div className={styles.driverCore}>
+                                                <span className={`${styles.driverCode} text-mono`}>{d.driverCode}</span>
+                                                <span className={styles.driverName}>{d.driverName}</span>
+                                            </div>
+                                        </div>
+                                        <div className={styles.scoreSection}>
+                                            <div className={styles.scoreHeader}>
+                                                <span className={styles.scoreLabel}>Consistency Index</span>
+                                                <span className={`${styles.scoreValue} text-mono`} style={{ color: scoreColor(d.consistencyScore) }}>{d.consistencyScore}%</span>
+                                            </div>
+                                            <div className={styles.scoreBar}>
+                                                <motion.div
+                                                    initial={{ width: 0 }}
+                                                    animate={{ width: `${d.consistencyScore}%` }}
+                                                    className={styles.scoreFill}
+                                                    style={{ backgroundColor: scoreColor(d.consistencyScore) }}
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className={styles.consistencyStats}>
+                                            <div className={styles.miniStat}>
+                                                <span>AVG</span>
+                                                <span className="text-mono">P{d.avgPosition}</span>
+                                            </div>
+                                            <div className={styles.miniStat}>
+                                                <span>POD</span>
+                                                <span className="text-mono">{d.podiums}</span>
+                                            </div>
+                                            <div className={styles.miniStat}>
+                                                <span>DNF</span>
+                                                <span className="text-mono">{d.dnfs}</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                ))}
+                            </motion.div>
+                        </motion.div>
+                    )}
+
+                    {tab === 'live' && (
+                        <motion.div
+                            key="live"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -10 }}
+                            className={styles.liveSection}
+                        >
+                            <div className={styles.liveHeader}>
+                                <div className={`${styles.sessionPill} ${liveData?.is_active ? styles.sessionActive : styles.sessionInactive}`}>
+                                    <IconRadio size={16} />
+                                    <span>{liveData?.is_active ? 'LIVE SESSION ACTIVE' : 'NO LIVE SESSION'}</span>
+                                </div>
+                                {lastPoll && (
+                                    <div className={styles.pollInfo}>
+                                        <Clock size={12} />
+                                        <span>Last update: {lastPoll.toLocaleTimeString()}</span>
+                                        <span className={styles.autoHint}>(Auto-polling every 30s)</span>
+                                    </div>
+                                )}
+                            </div>
+
+                            {!liveData?.is_active ? (
+                                <div className={styles.noLive}>
+                                    <div className={styles.offlineBanner}>
+                                        <div style={{ opacity: 0.2, marginBottom: 12 }}>
+                                            <IconRefresh size={24} />
+                                        </div>
+                                        <p>No live Formula 1 session is currently being broadcast.</p>
+                                        <span>Historical data and consistency scores remain available.</span>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className={styles.podiumGrid}>
+                                    {(liveData.drivers || []).map((driver: any) => (
+                                        <motion.div
+                                            key={driver.driver_number}
+                                            className={`${styles.podiumCard} glass-card`}
+                                            initial={{ opacity: 0, scale: 0.9 }}
+                                            animate={{ opacity: 1, scale: 1 }}
                                         >
-                                            {y}Y
-                                        </button>
+                                            <div className={styles.cardHeader}>
+                                                <div className={styles.rankBadge} style={{ color: driver.position <= 3 ? MEDAL[driver.position] : '#fff' }}>
+                                                    P{driver.position}
+                                                </div>
+                                                <div className={styles.raceMeta}>
+                                                    <span className={styles.tyreBadge} style={{
+                                                        borderColor: driver.compound === 'SOFT' ? '#f44336' : driver.compound === 'MEDIUM' ? '#ffeb3b' : '#fff',
+                                                        color: driver.compound === 'SOFT' ? '#f44336' : driver.compound === 'MEDIUM' ? '#ffeb3b' : '#fff'
+                                                    }}>
+                                                        {driver.compound?.[0] || '?'}
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <h3 className={styles.raceTitle}>{driver.driver_name || `Driver #${driver.driver_number}`}</h3>
+
+                                            <div className={styles.driverInfo}>
+                                                <span className={`${styles.driverCode} text-mono`}>LAP {driver.lap}</span>
+                                                <span className={styles.leaderGap}>{driver.gap}</span>
+                                            </div>
+
+                                            <div className={styles.teamMeta}>
+                                                <span className={styles.teamBar} style={{ background: getTeamColor(getTeamNameForDriver(driver.driver_number)) }} />
+                                                <span className={styles.teamName}>F1 Competitor</span>
+                                            </div>
+                                        </motion.div>
                                     ))}
                                 </div>
-                            </div>
-
-                            <div className={styles.controlGroup}>
-                                <label className={styles.controlLabel}>Season</label>
-                                <select
-                                    className={styles.select}
-                                    value={filterYear}
-                                    onChange={e => setFilterYear(e.target.value)}
-                                >
-                                    <option value="all">All seasons</option>
-                                    {availableSeasons.map(s => <option key={s} value={s}>{s}</option>)}
-                                </select>
-                            </div>
-
-                            <div className={styles.controlGroup}>
-                                <label className={styles.controlLabel}>Position</label>
-                                <select
-                                    className={styles.select}
-                                    value={filterPos}
-                                    onChange={e => setFilterPos(e.target.value)}
-                                >
-                                    <option value="all">All podium</option>
-                                    <option value="1">🥇 Winner</option>
-                                    <option value="2">🥈 2nd</option>
-                                    <option value="3">🥉 3rd</option>
-                                </select>
-                            </div>
-
-                            <button className={styles.refreshBtn} onClick={fetchPodiums}>
-                                <IconRefresh size={14} /> Refresh
-                            </button>
-                        </div>
-
-                        {loading ? (
-                            <div className={styles.loadingState}>
-                                <div className={styles.spinner} />
-                                <p>Loading {yearsBack} years of podiums…</p>
-                            </div>
-                        ) : (
-                            <div className={styles.tableWrap}>
-                                <table className={styles.table} id="podiums-table">
-                                    <thead>
-                                        <tr>
-                                            <th className={styles.th}>Pos</th>
-                                            <th className={styles.th}>Race</th>
-                                            <th className={styles.th}>Season</th>
-                                            <th className={styles.th}>Date</th>
-                                            <th className={styles.th}>Driver</th>
-                                            <th className={styles.th}>Constructor</th>
-                                            <th className={styles.th}>Time / Gap</th>
-                                            <th className={styles.th}>Pts</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {filteredPodiums.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={8} className={styles.emptyRow}>
-                                                    No results match the current filter.
-                                                </td>
-                                            </tr>
-                                        ) : filteredPodiums.map((p, i) => {
-                                            const isWinner = p.position === 1;
-                                            const teamColor = getTeamColor(p.constructorId);
-                                            return (
-                                                <tr
-                                                    key={`${p.season}-${p.round}-${p.position}`}
-                                                    className={`${styles.tr} ${isWinner ? styles.trWinner : ''}`}
-                                                    style={{ animationDelay: `${(i % 30) * 20}ms` }}
-                                                >
-                                                    <td className={styles.td}>
-                                                        <span
-                                                            className={styles.medalBadge}
-                                                            style={{ color: MEDAL[p.position] }}
-                                                        >
-                                                            {MEDAL_LABEL[p.position]}
-                                                        </span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.raceName}>{p.raceName}</span>
-                                                        <span className={styles.circuitName}>{p.circuitName}</span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.seasonBadge}>{p.season}</span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        {new Date(p.date).toLocaleDateString('en-GB', {
-                                                            day: '2-digit', month: 'short', year: 'numeric'
-                                                        })}
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.driverCell}>
-                                                            <span
-                                                                className={styles.driverCode}
-                                                                style={{ color: isWinner ? '#FFD700' : 'inherit' }}
-                                                            >
-                                                                {p.driverCode}
-                                                            </span>
-                                                            <span className={styles.driverName}>{p.driverName}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.constructorCell}>
-                                                            <span
-                                                                className={styles.constructorBar}
-                                                                style={{ background: teamColor }}
-                                                            />
-                                                            {p.constructorName}
-                                                        </div>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.raceTime}>{p.time}</span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.pointsBadge}>{p.points}</span>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-
-                                <p className={styles.tableFooter}>
-                                    Showing {filteredPodiums.length} podium entries
-                                </p>
-                            </div>
-                        )}
-                    </>
-                )}
-
-                {/* ══════════════════════════════════════════════════════════
-            TAB: CONSISTENCY SCORES
-        ══════════════════════════════════════════════════════════ */}
-                {tab === 'consistency' && (
-                    <>
-                        <div className={styles.consistencyIntro}>
-                            <p>
-                                Driver Consistency Score is calculated from the average finishing position
-                                across the last 10 races of the previous season.
-                                Score range: <strong>0 – 100</strong> (higher = more consistent / better finishes).
-                                DNFs count as P20.
-                            </p>
-                        </div>
-
-                        {loading ? (
-                            <div className={styles.loadingState}>
-                                <div className={styles.spinner} />
-                                <p>Crunching {YEAR_NOW - 1} season data…</p>
-                            </div>
-                        ) : (
-                            <div className={styles.tableWrap}>
-                                <table className={styles.table} id="consistency-table">
-                                    <thead>
-                                        <tr>
-                                            <th className={styles.th}>Rank</th>
-                                            <th className={styles.th}>Driver</th>
-                                            <th className={styles.th}>Constructor</th>
-                                            <th className={styles.th}>Score</th>
-                                            <th className={styles.th}>Avg Pos</th>
-                                            <th className={styles.th}>Races</th>
-                                            <th className={styles.th}>Wins</th>
-                                            <th className={styles.th}>Podiums</th>
-                                            <th className={styles.th}>DNFs</th>
-                                            <th className={styles.th}>Recent Form (last 10)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {consistency.length === 0 ? (
-                                            <tr>
-                                                <td colSpan={10} className={styles.emptyRow}>
-                                                    No data available.
-                                                </td>
-                                            </tr>
-                                        ) : consistency.map((d, i) => {
-                                            const teamColor = getTeamColor(d.constructorId);
-                                            const sc = d.consistencyScore;
-                                            return (
-                                                <tr
-                                                    key={d.driverId}
-                                                    className={`${styles.tr} ${i === 0 ? styles.trWinner : ''}`}
-                                                    style={{ animationDelay: `${i * 25}ms` }}
-                                                >
-                                                    <td className={styles.td}>
-                                                        <span className={styles.rankBadge}>
-                                                            {i < 3 ? ['🥇', '🥈', '🥉'][i] : `#${i + 1}`}
-                                                        </span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.driverCell}>
-                                                            <span className={styles.driverCode}>{d.driverCode}</span>
-                                                            <span className={styles.driverName}>{d.driverName}</span>
-                                                        </div>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.constructorCell}>
-                                                            <span className={styles.constructorBar} style={{ background: teamColor }} />
-                                                            {d.constructorName}
-                                                        </div>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.scoreCell}>
-                                                            <div className={styles.scoreBar}>
-                                                                <div
-                                                                    className={styles.scoreFill}
-                                                                    style={{ width: `${sc}%`, background: scoreColor(sc) }}
-                                                                />
-                                                            </div>
-                                                            <span className={styles.scoreNum} style={{ color: scoreColor(sc) }}>
-                                                                {sc}
-                                                            </span>
-                                                        </div>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.avgPos}>P{d.avgPosition}</span>
-                                                    </td>
-                                                    <td className={styles.td}>{d.races}</td>
-                                                    <td className={styles.td}>
-                                                        <span style={{ color: '#FFD700', fontWeight: 700 }}>{d.wins}</span>
-                                                    </td>
-                                                    <td className={styles.td}>{d.podiums}</td>
-                                                    <td className={styles.td}>
-                                                        <span style={{ color: d.dnfs > 2 ? '#ef5350' : 'inherit' }}>{d.dnfs}</span>
-                                                    </td>
-                                                    <td className={styles.td}>
-                                                        <div className={styles.formDots}>
-                                                            {d.recentForm.map((pos, j) => (
-                                                                <span
-                                                                    key={j}
-                                                                    className={styles.formDot}
-                                                                    style={{ background: formDot(pos) }}
-                                                                    title={`P${pos}`}
-                                                                />
-                                                            ))}
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                                <p className={styles.tableFooter}>
-                                    Based on {YEAR_NOW - 1} season · {consistency.length} drivers ranked
-                                </p>
-                            </div>
-                        )}
-                    </>
-                )}
-
-                {/* ══════════════════════════════════════════════════════════
-            TAB: LIVE RACE
-        ══════════════════════════════════════════════════════════ */}
-                {tab === 'live' && (
-                    <div className={styles.liveSection}>
-                        {/* Session pill */}
-                        <div className={styles.liveHeader}>
-                            <div
-                                className={`${styles.sessionPill} ${liveData?.is_active ? styles.sessionActive : styles.sessionInactive}`}
-                            >
-                                <IconLive size={12} />
-                                {liveData?.is_active
-                                    ? `🔴 LIVE — ${liveData.session?.session_name ?? 'Race'} · ${liveData.session?.location ?? ''}, ${liveData.session?.country_name ?? ''}`
-                                    : liveData?.session
-                                        ? `⏸ Offline — Last: ${liveData.session.session_name} · ${liveData.session.location}`
-                                        : '⏳ Checking session via /api/live…'
-                                }
-                            </div>
-
-                            <div className={styles.pollInfo}>
-                                {lastPoll && <span>Updated {lastPoll.toLocaleTimeString()}</span>}
-                                {liveData?.cache_source && (
-                                    <span style={{ fontSize: '0.7rem', opacity: 0.5 }}>src: {liveData.cache_source}</span>
-                                )}
-                                <button className={styles.refreshBtn} onClick={pollLive} disabled={liveLoading}>
-                                    <IconRefresh size={13} /> {liveLoading ? 'Polling…' : 'Poll now'}
-                                </button>
-                                <span className={styles.autoHint}>Auto-polls every 30 s</span>
-                            </div>
-                        </div>
-
-                        {!liveData?.is_active && (
-                            <div className={styles.offlineBanner}>
-                                <p>
-                                    <strong>No active race session detected.</strong> Live data will appear here
-                                    automatically during a race weekend. Data is served from
-                                    <strong> Supabase cache → OpenF1</strong> — no CORS issues, no rate limits.
-                                </p>
-                            </div>
-                        )}
-
-                        {(liveData?.drivers?.length ?? 0) > 0 ? (
-                            <div className={styles.tableWrap}>
-                                <table className={styles.table} id="live-table">
-                                    <thead>
-                                        <tr>
-                                            <th className={styles.th}>Pos</th>
-                                            <th className={styles.th}>Driver #</th>
-                                            <th className={styles.th}>Gap to Leader</th>
-                                            <th className={styles.th}>Lap</th>
-                                            <th className={styles.th}>Tyre</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {liveData!.drivers.map((d, i) => {
-                                            const isLeader = d.gap === 'LEADER';
-                                            const compound = d.compound ?? 'UNKNOWN';
-                                            const tyreColor =
-                                                compound === 'SOFT' ? '#ff3333' :
-                                                    compound === 'MEDIUM' ? '#ffdd00' :
-                                                        compound === 'HARD' ? '#ffffff' :
-                                                            compound === 'INTER' ? '#33cc33' :
-                                                                compound === 'WET' ? '#1177ff' : '#888';
-
-                                            return (
-                                                <tr
-                                                    key={d.driver_number}
-                                                    className={`${styles.tr} ${isLeader ? styles.trWinner : ''}`}
-                                                    style={{ animationDelay: `${i * 20}ms` }}
-                                                >
-                                                    <td className={styles.td}>
-                                                        <span className={styles.medalBadge} style={{ color: MEDAL[d.position] ?? 'inherit' }}>
-                                                            {d.position <= 3 ? MEDAL_LABEL[d.position] : `P${d.position}`}
-                                                        </span>
-                                                    </td>
-                                                    <td className={styles.td}><span className={styles.driverCode}>#{d.driver_number}</span></td>
-                                                    <td className={styles.td}>
-                                                        <span className={isLeader ? styles.leaderGap : styles.raceTime}>
-                                                            {isLeader ? '— LEADER —' : d.gap}
-                                                        </span>
-                                                    </td>
-                                                    <td className={styles.td}>{d.lap || '—'}</td>
-                                                    <td className={styles.td}>
-                                                        <span className={styles.tyreBadge} style={{ color: tyreColor, borderColor: tyreColor }}>
-                                                            {compound[0]}
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                </table>
-                            </div>
-                        ) : (
-                            <div className={styles.loadingState}>
-                                {liveLoading
-                                    ? <><div className={styles.spinner} /><p>Fetching live data via server cache…</p></>
-                                    : <p className={styles.noLive}>No live driver data yet<br /><span>Check back during a race weekend</span></p>
-                                }
-                            </div>
-                        )}
-                    </div>
-                )}
-
+                            )}
+                        </motion.div>
+                    )}
+                </AnimatePresence>
             </div>
         </div>
     );
+}
+
+// Helper to estimate team since OpenF1 driver data is sometimes barebones
+function getTeamNameForDriver(num: number): string {
+    const mapping: Record<number, string> = {
+        1: 'red_bull', 11: 'red_bull',
+        44: 'mercedes', 63: 'mercedes',
+        16: 'ferrari', 55: 'ferrari',
+        4: 'mclaren', 81: 'mclaren',
+        14: 'aston_martin', 18: 'aston_martin',
+        10: 'alpine', 31: 'alpine',
+        23: 'williams', 2: 'williams',
+        27: 'haas', 20: 'haas',
+        24: 'kick_sauber', 77: 'kick_sauber',
+        3: 'rb', 22: 'rb'
+    };
+    return mapping[num] || 'f1';
 }

@@ -85,8 +85,8 @@ async function openF1Fetch(endpoint: string, params: Record<string, string | num
 
 export async function getHistoricalPodiums(years: number = 5): Promise<PodiumEntry[]> {
     const currentYear = new Date().getFullYear();
+    // Include back N years starting from the last completed season
     const seasonRange = Array.from({ length: years }, (_, i) => currentYear - 1 - i);
-    // We go from (currentYear-1) back N years (current season may be incomplete)
 
     const seasonFetches = seasonRange.map(async (year): Promise<PodiumEntry[]> => {
         try {

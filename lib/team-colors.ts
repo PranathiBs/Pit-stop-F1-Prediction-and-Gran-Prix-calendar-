@@ -10,6 +10,7 @@ export const TEAM_COLORS: { [key: string]: string } = {
     'williams': '#37BEDD',
     'haas': '#B6BABD',
     'sauber': '#52E252',
+    'audi': '#F11C4D',
     'rb': '#6692FF',
     'kick_sauber': '#52E252',
     'alphatauri': '#6692FF',
@@ -17,6 +18,8 @@ export const TEAM_COLORS: { [key: string]: string } = {
     'racing_point': '#F596C8',
     'toro_rosso': '#469BFF',
     'renault': '#FFF500',
+    'cadillac': '#FFFFFF',
+    'andretti': '#0062B2',
 };
 
 export function getTeamColor(constructorId: string): string {

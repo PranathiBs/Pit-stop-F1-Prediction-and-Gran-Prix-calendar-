@@ -7,7 +7,7 @@ import styles from './calendar.module.css';
 import { Race, getRaceSchedule } from '@/lib/f1-api';
 import { getCurrentWeather, getWeatherEmoji, WeatherData } from '@/lib/weather-api';
 import { getCircuitDetail } from '@/lib/circuit-data';
-import { MedalIcon, ClockIcon, OfficialIcon, RacingCarIcon } from '@/components/Icons';
+import { Flag as FlagIcon, Trophy, Timer, CheckCircle, Info, Award, Clock, Car } from 'lucide-react';
 
 function CalendarContent() {
     const [races, setRaces] = useState<Race[]>([]);
@@ -127,7 +127,7 @@ function CalendarContent() {
                 ) : filteredRaces.length === 0 ? (
                     <div className={styles.emptyState}>
                         <div className={styles.emptyCar}>
-                            <RacingCarIcon size={100} color="rgba(255,255,255,0.05)" />
+                            <Car size={100} color="rgba(255,255,255,0.05)" />
                         </div>
                         <h3>No Race Events Found</h3>
                         <p>No matches for "{filter}" Grand Prix in {selectedYear === 'current' ? 'the current season' : selectedYear}.</p>
@@ -143,7 +143,7 @@ function CalendarContent() {
                         <div className={styles.statusBanner}>
                             {filter === 'completed' && (
                                 <div className={`${styles.bannerContent} ${styles.completedTag}`}>
-                                    <MedalIcon size={20} color="#39B54A" />
+                                    <Trophy size={20} color="#39B54A" />
                                     <div className={styles.bannerText}>
                                         <strong>Past Results Official</strong>
                                         <span>Viewing finalized race data and podium records for the selected season.</span>
@@ -152,7 +152,7 @@ function CalendarContent() {
                             )}
                             {filter === 'upcoming' && (
                                 <div className={`${styles.bannerContent} ${styles.upcomingTag}`}>
-                                    <ClockIcon size={20} color="#E10600" />
+                                    <Timer size={20} color="#E10600" />
                                     <div className={styles.bannerText}>
                                         <strong>Upcoming Grand Prix</strong>
                                         <span>Tracking the next rounds of the championship. Schedule subject to FIA updates.</span>
@@ -161,7 +161,7 @@ function CalendarContent() {
                             )}
                             {filter === 'all' && (
                                 <div className={`${styles.bannerContent} ${styles.infoTag}`}>
-                                    <OfficialIcon size={20} color="rgba(255,255,255,0.6)" />
+                                    <Info size={20} color="rgba(255,255,255,0.6)" />
                                     <div className={styles.bannerText}>
                                         <strong>Full Season View</strong>
                                         <span>Complete schedule for the {selectedYear === 'current' ? new Date().getFullYear() : selectedYear} FIA Formula 1 World Championship.</span>
@@ -194,7 +194,9 @@ function CalendarContent() {
 
                                         <div className={styles.raceHeader}>
                                             <span className={styles.round}>R{race.round.padStart(2, '0')}</span>
-                                            <span className={styles.flag}>{circuit?.flagEmoji || '🏁'}</span>
+                                            <span className={styles.flag}>
+                                                <FlagIcon size={14} color={circuit?.color || '#E10600'} />
+                                            </span>
                                         </div>
 
                                         <h3 className={styles.raceName}>{race.raceName}</h3>
@@ -223,7 +225,7 @@ function CalendarContent() {
                                         )}
 
                                         {isPast && (
-                                            <div className={styles.completedBadge}>✓ Official</div>
+                                            <div className={styles.completedBadge}><CheckCircle size={12} style={{ marginRight: 4 }} /> Official</div>
                                         )}
 
                                         <div className={styles.cardStripe} style={{ background: circuit?.color || '#E10600' }} />

@@ -3,16 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "predev": "npx -y kill-port 3000 8000 3001 || true",
+    "dev": "concurrently \"next dev\" \"npm run dev:ml\"",
+    "dev:ml": ".\\.venv\\Scripts\\python.exe main.py",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.98.0",
+    "concurrently": "^9.2.1",
+    "framer-motion": "^12.34.3",
+    "lucide-react": "^0.575.0",
     "next": "16.1.6",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "rss-parser": "^3.13.0"
   },
   "devDependencies": {
     "@types/node": "^20",

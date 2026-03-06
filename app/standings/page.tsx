@@ -7,7 +7,7 @@ import {
     DriverStanding, ConstructorStanding
 } from '@/lib/f1-api';
 import { getTeamColor } from '@/lib/team-colors';
-import { HelmetIcon, ConstructorIcon, MedalIcon, TrophyIcon, RacingCarIcon } from '@/components/Icons';
+import { Trophy, Users, Shield, Award, Activity, Search, Car } from 'lucide-react';
 
 export default function StandingsPage() {
     const [driverStandings, setDriverStandings] = useState<DriverStanding[]>([]);
@@ -39,7 +39,7 @@ export default function StandingsPage() {
             <div className={styles.container}>
                 <div className={styles.header}>
                     <div className={styles.headerLeft}>
-                        <div className={styles.titleIcon}><TrophyIcon size={28} color="#E10600" /></div>
+                        <div className={styles.titleIcon}><Trophy size={28} color="#E10600" /></div>
                         <div>
                             <h1 className={styles.title}>Championship Standings</h1>
                             <p className={styles.subtitle}>
@@ -67,14 +67,14 @@ export default function StandingsPage() {
                         className={`${styles.tab} ${activeTab === 'drivers' ? styles.tabActive : ''}`}
                         onClick={() => setActiveTab('drivers')}
                     >
-                        <HelmetIcon size={16} color={activeTab === 'drivers' ? '#E10600' : 'currentColor'} />
+                        <Users size={16} color={activeTab === 'drivers' ? '#E10600' : 'currentColor'} />
                         <span>Drivers</span>
                     </button>
                     <button
                         className={`${styles.tab} ${activeTab === 'constructors' ? styles.tabActive : ''}`}
                         onClick={() => setActiveTab('constructors')}
                     >
-                        <ConstructorIcon size={16} color={activeTab === 'constructors' ? '#E10600' : 'currentColor'} />
+                        <Shield size={16} color={activeTab === 'constructors' ? '#E10600' : 'currentColor'} />
                         <span>Constructors</span>
                     </button>
                 </div>
@@ -100,7 +100,7 @@ export default function StandingsPage() {
                                                 style={{ '--team-color': teamColor } as React.CSSProperties}
                                             >
                                                 <div className={styles.podiumPosition}>
-                                                    <MedalIcon size={28} color={i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : '#CD7F32'} />
+                                                    <Trophy size={28} color={i === 0 ? '#FFD700' : i === 1 ? '#C0C0C0' : '#CD7F32'} />
                                                 </div>
                                                 <div className={styles.podiumNumber}>#{standing.Driver.permanentNumber}</div>
                                                 <div className={styles.podiumName}>
@@ -155,7 +155,7 @@ export default function StandingsPage() {
                         )}
                         {activeTab === 'drivers' && driverStandings.length === 0 && (
                             <div className={styles.emptyState}>
-                                <RacingCarIcon size={56} color="rgba(255,255,255,0.15)" />
+                                <Car size={56} color="rgba(255,255,255,0.15)" />
                                 <h3 className={styles.emptyTitle}>No Race Results Yet</h3>
                                 <p className={styles.emptyDesc}>The {season === 'current' ? new Date().getFullYear() : season} season hasn&apos;t started yet. Championship standings will appear here after the first race.</p>
                             </div>
@@ -202,7 +202,7 @@ export default function StandingsPage() {
                         )}
                         {activeTab === 'constructors' && constructorStandings.length === 0 && (
                             <div className={styles.emptyState}>
-                                <ConstructorIcon size={56} color="rgba(255,255,255,0.15)" />
+                                <Shield size={56} color="rgba(255,255,255,0.15)" />
                                 <h3 className={styles.emptyTitle}>No Constructor Results Yet</h3>
                                 <p className={styles.emptyDesc}>Constructor standings will appear here after the first race of the {season === 'current' ? new Date().getFullYear() : season} season.</p>
                             </div>

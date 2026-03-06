@@ -17,7 +17,14 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <Navigation />
-        <main style={{ paddingTop: '70px', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+        <div className="global-background">
+          <div className="global-blur" />
+          <div className="global-carbon" />
+          <div className="global-glow" />
+          <div className="global-glow2" />
+          <div className="global-overlay" />
+        </div>
+        <main style={{ minHeight: '100vh', position: 'relative', zIndex: 1 }}>
           {children}
         </main>
       </body>

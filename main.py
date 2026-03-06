@@ -13,7 +13,8 @@ import asyncio
 import pandas as pd
 import numpy as np
 import httpx
-from datetime import datetime, timezone
+import asyncio
+from datetime import datetime, timezone, timedelta
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
@@ -54,8 +55,44 @@ LIVE_CACHE:  dict = {"data": None, "ts": 0}   # simple 30s i-mem cache
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("[Engine] Pit Stop ML Engine starting...")
+    # Start background sync task
+    sync_task = asyncio.create_task(periodic_sync())
     yield
+    print("[Engine] Shutdown: Stopping sync task...")
+    sync_task.cancel()
+    try:
+        await sync_task
+    except asyncio.CancelledError:
+        pass
     print("[Engine] Shutdown complete.")
+
+async def periodic_sync():
+    """Periodically triggers the Next.js sync endpoint to keep data fresh."""
+    NEXT_BASE = os.getenv("NEXT_PUBLIC_SITE_URL", "http://localhost:3000")
+    CRON_SECRET = os.getenv("CRON_SECRET", "")
+    
+    print(f"[Sync] Background worker initialized. Target: {NEXT_BASE}")
+    
+    while True:
+        try:
+            # Sync current year
+            year = datetime.now().year
+            url = f"{NEXT_BASE}/api/sync?year={year}&secret={CRON_SECRET}"
+            
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                print(f"[Sync] Triggering data sync for {year}...")
+                r = await client.get(url)
+                if r.status_code == 200:
+                    data = r.json()
+                    print(f"[Sync] Success: {data.get('races', 0)} races, {data.get('drivers', 0)} drivers.")
+                else:
+                    print(f"[Sync] Failed ({r.status_code}): {r.text}")
+                    
+        except Exception as e:
+            print(f"[Sync] Unexpected error: {e}")
+            
+        # Wait 30 minutes before next sync
+        await asyncio.sleep(1800) 
 
 app = FastAPI(title="Pit Stop: AI Data Engine", version="4.0.0", lifespan=lifespan)
 
