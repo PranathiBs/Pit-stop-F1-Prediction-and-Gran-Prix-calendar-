@@ -20,16 +20,12 @@
 
 .container {
     max-width: 1400px;
-    margin: 10px auto;
+    margin: 0 auto;
     padding: 0 24px;
-    height: 54px;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 100px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(10, 10, 10, 0.7);
-    backdrop-filter: blur(20px);
 }
 
 /* Logo */
@@ -65,11 +61,14 @@
 
 .logoText {
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 900;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     line-height: 1;
-    color: #fff;
+    background: linear-gradient(135deg, #E10600 0%, #ff4136 40%, #fff 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .logoYear {
@@ -132,13 +131,14 @@
 
 .activeIndicator {
     position: absolute;
-    bottom: 2px;
-    left: 16px;
-    right: 16px;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 20px;
     height: 2px;
     background: #E10600;
     border-radius: 2px;
-    box-shadow: 0 0 10px #E10600;
+    box-shadow: 0 0 8px rgba(225, 6, 0, 0.5);
 }
 
 /* Right Section */
@@ -151,39 +151,17 @@
 .liveIndicator {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 6px 14px;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(225, 6, 0, 0.08);
+    border: 1px solid rgba(225, 6, 0, 0.25);
     border-radius: 20px;
-    background: rgba(225, 6, 0, 0.1);
-}
-
-.livePulse {
-    color: #E10600;
-    filter: drop-shadow(0 0 5px #E10600);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.5;
-        transform: scale(0.9);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
 }
 
 .liveText {
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    font-weight: 800;
+    font-size: 0.6rem;
+    font-weight: 700;
     letter-spacing: 2px;
     color: #E10600;
 }

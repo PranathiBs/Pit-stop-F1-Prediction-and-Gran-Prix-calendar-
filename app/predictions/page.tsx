@@ -1,12 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import {
-    Shield, Zap, Wind, Droplets, Thermometer, Info, Beaker, Play,
-    AlertTriangle, Trophy, Cloud, Sun, CloudRain, Flag as FlagIcon,
-    MapPin, Gauge, BarChart3, Award
-} from 'lucide-react';
 import styles from './predictions.module.css';
 import { getRaceSchedule, Race } from '@/lib/f1-api';
 import { getCurrentWeather, getWeatherEmoji, WeatherData } from '@/lib/weather-api';
@@ -122,54 +116,33 @@ export default function PredictionsPage() {
     return (
         <div className={styles.page}>
             <div className={styles.container}>
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={styles.header}
-                >
+                <div className={styles.header}>
                     <h1 className={styles.title}>Tyre Strategy Predictor</h1>
                     <p className={styles.subtitle}>
                         AI-powered tyre strategy predictions based on weather conditions and track characteristics
                     </p>
-                </motion.div>
+                </div>
 
                 {/* Circuit Selector */}
                 <div className={styles.selectorSection}>
                     <h2 className={styles.sectionTitle}>Select Circuit</h2>
-                    <motion.div
-                        className={styles.circuitGrid}
-                        initial="hidden"
-                        animate="visible"
-                        variants={{
-                            hidden: { opacity: 0 },
-                            visible: {
-                                opacity: 1,
-                                transition: { staggerChildren: 0.03 }
-                            }
-                        }}
-                    >
+                    <div className={styles.circuitGrid}>
                         {races.map(race => {
                             const detail = getCircuitDetail(race.Circuit.circuitId);
                             const isSelected = selectedCircuit === race.Circuit.circuitId;
                             return (
-                                <motion.button
+                                <button
                                     key={race.Circuit.circuitId}
-                                    variants={{
-                                        hidden: { opacity: 0, scale: 0.9 },
-                                        visible: { opacity: 1, scale: 1 }
-                                    }}
-                                    whileHover={{ scale: 1.05, y: -2 }}
-                                    whileTap={{ scale: 0.95 }}
                                     className={`${styles.circuitBtn} ${isSelected ? styles.circuitSelected : ''}`}
                                     onClick={() => handleCircuitSelect(race.Circuit.circuitId)}
                                 >
-                                    <FlagIcon size={16} color={detail?.color || '#E10600'} style={{ marginRight: 8 }} />
+                                    <span className={styles.circuitFlag}>{detail?.flagEmoji || '🏁'}</span>
                                     <span className={styles.circuitBtnName}>{race.Circuit.Location.locality}</span>
                                     <span className={styles.circuitCountry}>{race.Circuit.Location.country}</span>
-                                </motion.button>
+                                </button>
                             );
                         })}
-                    </motion.div>
+                    </div>
                 </div>
 
                 {selectedCircuit && (
@@ -178,8 +151,7 @@ export default function PredictionsPage() {
                         <div className={styles.weatherPanel}>
                             <div className={styles.weatherPanelHeader}>
                                 <h2 className={styles.sectionTitle}>
-                                    <CloudRain size={20} color="#E10600" style={{ marginRight: 8 }} />
-                                    Weather at {circuitDetail?.name || selectedCircuit}
+                                    🌦️ Weather at {circuitDetail?.name || selectedCircuit}
                                 </h2>
                                 <label className={styles.customToggle}>
                                     <input
@@ -203,10 +175,10 @@ export default function PredictionsPage() {
                                             </div>
                                         </div>
                                         <div className={styles.liveWeatherStats}>
-                                            <div><Droplets size={14} color="rgba(255,255,255,0.4)" /> <span>Humidity:</span> <span>{weather.humidity}%</span></div>
-                                            <div><Wind size={14} color="rgba(255,255,255,0.4)" /> <span>Wind:</span> <span>{weather.wind_speed.toFixed(1)} m/s</span></div>
-                                            <div><CloudRain size={14} color="rgba(255,255,255,0.4)" /> <span>Rain:</span> <span>{weather.rain_probability}%</span></div>
-                                            <div><Cloud size={14} color="rgba(255,255,255,0.4)" /> <span>Clouds:</span> <span>{weather.clouds}%</span></div>
+                                            <div><span>💧 Humidity:</span> <span>{weather.humidity}%</span></div>
+                                            <div><span>💨 Wind:</span> <span>{weather.wind_speed.toFixed(1)} m/s</span></div>
+                                            <div><span>🌧️ Rain:</span> <span>{weather.rain_probability}%</span></div>
+                                            <div><span>☁️ Clouds:</span> <span>{weather.clouds}%</span></div>
                                         </div>
                                     </div>
                                 )}
@@ -215,7 +187,7 @@ export default function PredictionsPage() {
                                     <div className={styles.customWeather}>
                                         <div className={styles.sliderGroup}>
                                             <label>
-                                                <Thermometer size={16} color="rgba(255,255,255,0.4)" /> <span>Temperature</span>
+                                                <span>🌡️ Temperature</span>
                                                 <span className={styles.sliderValue}>{customTemp}°C</span>
                                             </label>
                                             <input
@@ -231,7 +203,7 @@ export default function PredictionsPage() {
                                         </div>
                                         <div className={styles.sliderGroup}>
                                             <label>
-                                                <CloudRain size={16} color="rgba(255,255,255,0.4)" /> <span>Rain Probability</span>
+                                                <span>🌧️ Rain Probability</span>
                                                 <span className={styles.sliderValue}>{customRain}%</span>
                                             </label>
                                             <input
@@ -246,7 +218,7 @@ export default function PredictionsPage() {
                                             </div>
                                         </div>
                                         <button className={styles.recalcBtn} onClick={recalculate}>
-                                            <Zap size={18} /> Recalculate Strategy
+                                            🏎️ Recalculate Strategy
                                         </button>
                                     </div>
                                 )}
@@ -256,7 +228,7 @@ export default function PredictionsPage() {
                         {/* Track Info */}
                         {trackData && (
                             <div className={styles.trackInfo}>
-                                <h2 className={styles.sectionTitle}><BarChart3 size={20} color="#E10600" style={{ marginRight: 8 }} /> Track Characteristics</h2>
+                                <h2 className={styles.sectionTitle}>📊 Track Characteristics</h2>
                                 <div className={styles.trackGrid}>
                                     <div className={styles.trackStat}>
                                         <span className={styles.trackStatLabel}>Total Laps</span>
@@ -293,82 +265,40 @@ export default function PredictionsPage() {
                         )}
 
                         {/* ─── ML Race Prediction Grid ─────────────────── */}
-                        <motion.div
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            className={`${styles.mlSection} glass-card`}
-                        >
+                        <div className={styles.mlSection}>
                             <div className={styles.mlHeader}>
-                                <Beaker className={styles.mlIcon} size={18} color="#FFD700" />
-                                <span className={styles.mlTitle}>ML Race Prediction</span>
+                                <span className={styles.mlTitle}>🤖 ML Race Prediction</span>
                                 <span className={styles.mlBadge}>{mlResult?.version ?? 'rf_v2'}</span>
                                 {mlResult?.from_cache && <span className={styles.cacheTag}>cached</span>}
                             </div>
-
-                            <AnimatePresence mode="wait">
-                                {mlLoading ? (
-                                    <motion.div
-                                        key="loading"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        exit={{ opacity: 0 }}
-                                        className={styles.mlLoading}
-                                    >
-                                        <div className={styles.spinner} />
-                                        <p className="text-mono">RandomForest engine computing grid…</p>
-                                    </motion.div>
-                                ) : mlResult?.error ? (
-                                    <motion.div
-                                        key="error"
-                                        initial={{ opacity: 0 }}
-                                        animate={{ opacity: 1 }}
-                                        className={styles.mlOffline}
-                                    >
-                                        <AlertTriangle size={18} />
-                                        <span>
-                                            ML engine starting up or offline. Run <code>npm run dev</code> to enable.
-                                        </span>
-                                    </motion.div>
-                                ) : mlResult && mlResult.predictions.length > 0 ? (
-                                    <motion.div
-                                        key="grid"
-                                        initial="hidden"
-                                        animate="visible"
-                                        variants={{
-                                            hidden: { opacity: 0 },
-                                            visible: { opacity: 1, transition: { staggerChildren: 0.05 } }
-                                        }}
-                                        className={styles.mlGrid}
-                                    >
-                                        {mlResult.predictions.slice(0, 10).map((p, i) => (
-                                            <motion.div
-                                                key={p.driver}
-                                                variants={{
-                                                    hidden: { opacity: 0, x: -10 },
-                                                    visible: { opacity: 1, x: 0 }
-                                                }}
-                                                className={`${styles.mlRow} ${i === 0 ? styles.mlWinner : ''}`}
-                                            >
-                                                <span className={styles.mlPos}>
-                                                    {i === 0 ? <Trophy size={14} color="#FFD700" /> : i === 1 ? <Award size={14} color="#C0C0C0" /> : i === 2 ? <Award size={14} color="#CD7F32" /> : `P${i + 1}`}
-                                                </span>
-                                                <span className={`${styles.mlDriver} text-mono`}>{p.driver}</span>
-                                                <div className={styles.mlConfBar}>
-                                                    <motion.div
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${p.confidence}%` }}
-                                                        className={styles.mlConfFill}
-                                                        style={{ background: p.confidence >= 70 ? '#00e676' : p.confidence >= 50 ? '#FFD700' : '#ff9800' }}
-                                                    />
-                                                </div>
-                                                <span className={`${styles.mlConf} text-mono`}>{p.confidence.toFixed(0)}%</span>
-                                                <span className={styles.mlPace}>{p.base_pace.toFixed(3)}s</span>
-                                            </motion.div>
-                                        ))}
-                                    </motion.div>
-                                ) : null}
-                            </AnimatePresence>
-                        </motion.div>
+                            {mlLoading && (
+                                <div className={styles.mlLoading}>
+                                    <div className={styles.spinner} />
+                                    <p>RandomForest engine computing grid…</p>
+                                </div>
+                            )}
+                            {mlResult?.error && (
+                                <div className={styles.mlOffline}>
+                                    ⚠️ ML engine offline — start the Python backend to enable predictions.<br />
+                                    <code>python main.py</code>
+                                </div>
+                            )}
+                            {!mlLoading && mlResult && !mlResult.error && mlResult.predictions.length > 0 && (
+                                <div className={styles.mlGrid}>
+                                    {mlResult.predictions.slice(0, 10).map((p, i) => (
+                                        <div key={p.driver} className={`${styles.mlRow} ${i === 0 ? styles.mlWinner : ''}`}>
+                                            <span className={styles.mlPos}>{i === 0 ? '🏆' : i === 1 ? '🥈' : i === 2 ? '🥉' : `P${p.predicted_pos}`}</span>
+                                            <span className={styles.mlDriver}>{p.driver}</span>
+                                            <div className={styles.mlConfBar}>
+                                                <div className={styles.mlConfFill} style={{ width: `${p.confidence}%`, background: p.confidence >= 70 ? '#00e676' : p.confidence >= 50 ? '#FFD700' : '#ff9800' }} />
+                                            </div>
+                                            <span className={styles.mlConf}>{p.confidence.toFixed(0)}%</span>
+                                            <span className={styles.mlPace}>{p.base_pace.toFixed(3)}s</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
                         {/* Strategy Results */}
                         {loading ? (
@@ -379,29 +309,14 @@ export default function PredictionsPage() {
                         ) : strategies.length > 0 ? (
                             <div className={styles.strategySection}>
                                 <h2 className={styles.sectionTitle}>🎯 Predicted Strategies</h2>
-                                <motion.div
-                                    className={styles.strategyGrid}
-                                    initial="hidden"
-                                    animate="visible"
-                                    variants={{
-                                        hidden: { opacity: 0 },
-                                        visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-                                    }}
-                                >
+                                <div className={styles.strategyGrid}>
                                     {strategies.map((strategy, i) => (
-                                        <motion.div
+                                        <div
                                             key={i}
-                                            variants={{
-                                                hidden: { opacity: 0, y: 20 },
-                                                visible: { opacity: 1, y: 0 }
-                                            }}
-                                            className={`${styles.strategyCard} ${strategy.recommended ? styles.recommended : ''} glass-card`}
+                                            className={`${styles.strategyCard} ${strategy.recommended ? styles.recommended : ''}`}
                                         >
                                             {strategy.recommended && (
-                                                <div className={styles.recommendedTag}>
-                                                    <Trophy size={10} style={{ marginRight: 4 }} />
-                                                    RECOMMENDED
-                                                </div>
+                                                <div className={styles.recommendedTag}>⭐ RECOMMENDED</div>
                                             )}
                                             <div className={styles.strategyTop}>
                                                 <h3 className={styles.stratName}>{strategy.name}</h3>
@@ -410,31 +325,28 @@ export default function PredictionsPage() {
                                                         {strategy.riskLevel}
                                                     </span>
                                                     <span className={styles.stops}>
-                                                        {strategy.totalStops} STOPS
+                                                        {strategy.totalStops}S
                                                     </span>
                                                 </div>
                                             </div>
                                             <p className={styles.stratDesc}>{strategy.description}</p>
 
-                                            {/* Visual Timeline (Visual Stint Pills) */}
+                                            {/* Visual Timeline */}
                                             <div className={styles.timeline}>
                                                 {strategy.stints.map((stint, j) => {
                                                     const total = strategy.stints.reduce((s, st) => s + st.laps, 0);
                                                     const width = (stint.laps / total) * 100;
                                                     return (
-                                                        <motion.div
+                                                        <div
                                                             key={j}
-                                                            initial={{ width: 0 }}
-                                                            animate={{ width: `${width}%` }}
-                                                            transition={{ delay: 0.2 + (j * 0.1), duration: 0.5 }}
                                                             className={styles.timelineBar}
                                                             style={{
+                                                                width: `${width}%`,
                                                                 backgroundColor: getTyreColor(stint.compound),
-                                                                boxShadow: `0 0 15px ${getTyreColor(stint.compound)}44`
                                                             }}
                                                         >
                                                             <span>{getTyreShort(stint.compound)}</span>
-                                                        </motion.div>
+                                                        </div>
                                                     );
                                                 })}
                                             </div>
@@ -445,13 +357,10 @@ export default function PredictionsPage() {
                                                     <div key={j} className={styles.stintItem}>
                                                         <div
                                                             className={styles.stintDot}
-                                                            style={{
-                                                                background: getTyreColor(stint.compound),
-                                                                boxShadow: `0 0 8px ${getTyreColor(stint.compound)}`
-                                                            }}
+                                                            style={{ background: getTyreColor(stint.compound) }}
                                                         />
                                                         <span className={styles.stintCompName}>{stint.compound}</span>
-                                                        <span className={`${styles.stintLapInfo} text-mono`}>
+                                                        <span className={styles.stintLapInfo}>
                                                             L{stint.startLap}–L{stint.endLap} ({stint.laps} laps)
                                                         </span>
                                                     </div>
@@ -461,17 +370,16 @@ export default function PredictionsPage() {
                                             {/* Confidence */}
                                             <div className={styles.confidence}>
                                                 <div className={styles.confBar}>
-                                                    <motion.div
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${strategy.confidence}%` }}
+                                                    <div
                                                         className={styles.confFill}
+                                                        style={{ width: `${strategy.confidence}%` }}
                                                     />
                                                 </div>
-                                                <span className={`${styles.confText} text-mono`}>{strategy.confidence}%</span>
+                                                <span className={styles.confText}>{strategy.confidence}%</span>
                                             </div>
-                                        </motion.div>
+                                        </div>
                                     ))}
-                                </motion.div>
+                                </div>
                             </div>
                         ) : null}
 

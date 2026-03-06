@@ -1,48 +1,97 @@
 /* ===== PIT STOP - F1 PREDICTION APP ===== */
 /* Global Design System */
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Syncopate:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* F1 "Crazzziness" Palette */
-  --neon-red: #ff003c;
-  --neon-cyan: #00f3ff;
-  --obsidian: #050505;
+  /* F1 Color Palette */
+  --f1-red: #E10600;
+  --f1-red-dark: #B30500;
+  --f1-red-glow: rgba(225, 6, 0, 0.4);
+  --f1-red-subtle: rgba(225, 6, 0, 0.1);
+  
   --carbon-900: #0a0a0a;
   --carbon-800: #111111;
   --carbon-700: #1a1a1a;
-
-  --f1-red: var(--neon-red);
-  --f1-red-dark: #b3002b;
-  --f1-red-glow: rgba(255, 0, 60, 0.5);
-  --f1-red-subtle: rgba(255, 0, 60, 0.1);
-  --cyan-glow: rgba(0, 243, 255, 0.5);
-
+  --carbon-600: #222222;
+  --carbon-500: #2a2a2a;
+  --carbon-400: #333333;
+  --carbon-300: #444444;
+  --carbon-200: #666666;
+  --carbon-100: #999999;
+  
   --white: #ffffff;
-  --white-90: rgba(255, 255, 255, 0.9);
-  --white-70: rgba(255, 255, 255, 0.7);
-  --white-50: rgba(255, 255, 255, 0.5);
-  --white-30: rgba(255, 255, 255, 0.3);
-  --white-10: rgba(255, 255, 255, 0.1);
-  --white-05: rgba(255, 255, 255, 0.05);
-
+  --white-90: rgba(255,255,255,0.9);
+  --white-70: rgba(255,255,255,0.7);
+  --white-50: rgba(255,255,255,0.5);
+  --white-30: rgba(255,255,255,0.3);
+  --white-10: rgba(255,255,255,0.1);
+  --white-05: rgba(255,255,255,0.05);
+  
+  /* Tyre Colors */
+  --tyre-soft: #FF3333;
+  --tyre-medium: #FFC906;
+  --tyre-hard: #FFFFFF;
+  --tyre-inter: #39B54A;
+  --tyre-wet: #0072C6;
+  
+  /* Team Colors */
+  --team-redbull: #3671C6;
+  --team-mercedes: #6CD3BF;
+  --team-ferrari: #F91536;
+  --team-mclaren: #F58020;
+  --team-astonmartin: #358C75;
+  --team-alpine: #2293D1;
+  --team-williams: #37BEDD;
+  --team-haas: #B6BABD;
+  --team-sauber: #52E252;
+  --team-rb: #6692FF;
+  
+  /* Weather Colors */
+  --weather-sun: #FFD700;
+  --weather-cloud: #87CEEB;
+  --weather-rain: #4A90D9;
+  --weather-storm: #6B5B95;
+  
   /* Gradients */
-  --gradient-f1: linear-gradient(135deg, var(--neon-red) 0%, #ff4d4d 100%);
-  --gradient-neon-blue: linear-gradient(135deg, var(--neon-cyan) 0%, #00d2ff 100%);
-  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
-  --gradient-obsidian: radial-gradient(circle at 50% 50%, #151515 0%, var(--obsidian) 100%);
-
+  --gradient-f1: linear-gradient(135deg, var(--f1-red) 0%, #ff4136 100%);
+  --gradient-carbon: linear-gradient(180deg, var(--carbon-700) 0%, var(--carbon-900) 100%);
+  --gradient-dark: linear-gradient(135deg, var(--carbon-800) 0%, var(--carbon-900) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  --gradient-shine: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
+  --shadow-elevated: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 20px var(--f1-red-glow);
+  --shadow-glow-sm: 0 0 10px var(--f1-red-glow);
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-spring: 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  
   /* Typography */
   --font-display: 'Orbitron', sans-serif;
-  --font-futuristic: 'Syncopate', sans-serif;
   --font-body: 'Inter', -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
-
-  /* Borders & Radius */
-  --radius-lg: 16px;
-  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
-  --neon-red-border: 1px solid var(--neon-red);
-  --neon-cyan-border: 1px solid var(--neon-cyan);
 }
 
 /* Reset & Base */
@@ -77,9 +126,9 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image:
-    radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-image: 
+    radial-gradient(circle at 25% 25%, rgba(255,255,255,0.02) 1px, transparent 1px),
+    radial-gradient(circle at 75% 75%, rgba(255,255,255,0.02) 1px, transparent 1px);
   background-size: 4px 4px;
   pointer-events: none;
   z-index: 0;
@@ -121,34 +170,14 @@ a {
 /* Glass Card */
 .glass-card {
   background: var(--gradient-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--white-10);
   border-radius: var(--radius-lg);
   padding: var(--space-lg);
   transition: all var(--transition-base);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-}
-
-.glass-card-neon {
-  background: rgba(10, 10, 10, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--white-10);
-  border-radius: var(--radius-lg);
-  position: relative;
-}
-
-.glass-card-neon::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(var(--white-10), transparent, var(--white-10));
-  border-radius: inherit;
-  z-index: -1;
-  opacity: 0.5;
 }
 
 .glass-card::before {
@@ -221,7 +250,7 @@ a {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
   transition: left var(--transition-slow);
 }
 
@@ -246,97 +275,6 @@ a {
 
 .f1-button-outline:hover {
   background: var(--f1-red-subtle);
-}
-
-/* Global Cinematic Background */
-.global-background {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-color: var(--obsidian);
-  pointer-events: none;
-  overflow: hidden;
-}
-
-.global-blur {
-  position: absolute;
-  inset: 0;
-  background-image: url('/f1-night-blur.png');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.22;
-  filter: blur(4px);
-  z-index: 1;
-}
-
-.global-carbon {
-  position: absolute;
-  inset: 0;
-  opacity: 0.12;
-  background-image:
-    linear-gradient(45deg, #000 25%, transparent 25%),
-    linear-gradient(-45deg, #000 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, #000 75%),
-    linear-gradient(-45deg, transparent 75%, #000 75%);
-  background-size: 8px 8px;
-  animation: carbonMoveGlobal 30s linear infinite;
-  z-index: 2;
-}
-
-.global-glow {
-  position: absolute;
-  top: -10%;
-  left: 5%;
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(225, 6, 0, 0.18) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: glowPulseGlobal 6s ease-in-out infinite;
-  z-index: 3;
-}
-
-.global-glow2 {
-  position: absolute;
-  bottom: -10%;
-  right: 5%;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, rgba(0, 243, 255, 0.08) 0%, transparent 70%);
-  border-radius: 50%;
-  animation: glowPulseGlobal 8s ease-in-out infinite reverse;
-  z-index: 3;
-}
-
-.global-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
-  opacity: 0.8;
-  z-index: 4;
-}
-
-@keyframes carbonMoveGlobal {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: 80px 80px;
-  }
-}
-
-@keyframes glowPulseGlobal {
-
-  0%,
-  100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.1);
-  }
 }
 
 /* Section Title */
@@ -395,21 +333,10 @@ a {
 }
 
 /* Weather Icon Colors */
-.weather-sunny {
-  color: var(--weather-sun);
-}
-
-.weather-cloudy {
-  color: var(--weather-cloud);
-}
-
-.weather-rainy {
-  color: var(--weather-rain);
-}
-
-.weather-stormy {
-  color: var(--weather-storm);
-}
+.weather-sunny { color: var(--weather-sun); }
+.weather-cloudy { color: var(--weather-cloud); }
+.weather-rainy { color: var(--weather-rain); }
+.weather-stormy { color: var(--weather-storm); }
 
 /* Tyre Indicators */
 .tyre-indicator {
@@ -477,23 +404,7 @@ a {
   font-size: 0.7rem;
   color: var(--white-50);
   text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 600;
-}
-
-/* Technical Mono Text */
-.text-mono {
-  font-family: var(--font-mono);
-  letter-spacing: -0.5px;
-}
-
-.text-glow {
-  text-shadow: 0 0 10px var(--f1-red-glow);
-}
-
-.neon-border {
-  border: 1px solid var(--f1-red);
-  box-shadow: 0 0 10px var(--f1-red-glow), inset 0 0 5px var(--f1-red-subtle);
+  letter-spacing: 1px;
 }
 
 /* Loading Animation */
@@ -509,21 +420,12 @@ a {
 
 /* Animations */
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
 @keyframes pulse {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.6;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 @keyframes fadeInUp {
@@ -531,7 +433,6 @@ a {
     opacity: 0;
     transform: translateY(20px);
   }
-
   to {
     opacity: 1;
     transform: translateY(0);
@@ -543,7 +444,6 @@ a {
     opacity: 0;
     transform: translateX(30px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
@@ -551,47 +451,27 @@ a {
 }
 
 @keyframes countDown {
-  from {
-    transform: scale(1.2);
-    opacity: 0;
-  }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
+  from { transform: scale(1.2); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 @keyframes glow {
-
-  0%,
-  100% {
+  0%, 100% { 
     box-shadow: 0 0 5px var(--f1-red-glow);
   }
-
-  50% {
+  50% { 
     box-shadow: 0 0 20px var(--f1-red-glow), 0 0 40px rgba(225, 6, 0, 0.2);
   }
 }
 
 @keyframes racingLine {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(200%);
-  }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
 }
 
 @keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-
-  100% {
-    background-position: 200% 0;
-  }
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
 /* Skeleton Loading */
@@ -608,40 +488,19 @@ a {
   gap: var(--space-lg);
 }
 
-.grid-2 {
-  grid-template-columns: repeat(2, 1fr);
-}
-
-.grid-3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.grid-4 {
-  grid-template-columns: repeat(4, 1fr);
-}
+.grid-2 { grid-template-columns: repeat(2, 1fr); }
+.grid-3 { grid-template-columns: repeat(3, 1fr); }
+.grid-4 { grid-template-columns: repeat(4, 1fr); }
 
 @media (max-width: 1024px) {
-  .grid-4 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .grid-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .grid-4 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-3 {
-    grid-template-columns: 1fr;
-  }
-
-  .grid-2 {
-    grid-template-columns: 1fr;
-  }
+  .grid-4 { grid-template-columns: 1fr; }
+  .grid-3 { grid-template-columns: 1fr; }
+  .grid-2 { grid-template-columns: 1fr; }
 }
 
 /* Fade In animation classes */
@@ -649,25 +508,10 @@ a {
   animation: fadeInUp 0.5s ease forwards;
 }
 
-.fade-in-delay-1 {
-  animation-delay: 0.1s;
-  opacity: 0;
-}
-
-.fade-in-delay-2 {
-  animation-delay: 0.2s;
-  opacity: 0;
-}
-
-.fade-in-delay-3 {
-  animation-delay: 0.3s;
-  opacity: 0;
-}
-
-.fade-in-delay-4 {
-  animation-delay: 0.4s;
-  opacity: 0;
-}
+.fade-in-delay-1 { animation-delay: 0.1s; opacity: 0; }
+.fade-in-delay-2 { animation-delay: 0.2s; opacity: 0; }
+.fade-in-delay-3 { animation-delay: 0.3s; opacity: 0; }
+.fade-in-delay-4 { animation-delay: 0.4s; opacity: 0; }
 
 /* Container */
 .container {

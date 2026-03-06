@@ -31,7 +31,7 @@ A high-performance, full-stack Formula 1 prediction application built with **Nex
 - **Data APIs**: OpenF1, Jolpica (Ergast V2), FastF1
 - **Icons**: Lucide React
 
-
+Check it out here: https://pit-stop-f1.vercel.app/
 
 ## ✨ Developed by
 Pranathi B S – *F1 Enthusiast & Developer*

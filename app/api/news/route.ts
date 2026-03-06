@@ -1,14 +1,12 @@
 import { NextResponse } from 'next/server';
 import { getLatestUpdates } from '@/lib/f1-news';
 
-export const revalidate = 30; // Match the 30s polling logic of the dashboard
-
 export async function GET() {
     try {
         const data = await getLatestUpdates();
-        return NextResponse.json(data);
+        return NextResponse.json(data.items);
     } catch (error) {
-        console.error('API /news error:', error);
-        return NextResponse.json({ items: [], lastUpdated: new Date().toISOString() }, { status: 500 });
+        console.error('API Error:', error);
+        return NextResponse.json({ error: 'Failed to fetch news' }, { status: 500 });
     }
 }

@@ -10,10 +10,9 @@ import { getCircuitInfo, getRaceResults, Circuit, Race } from '@/lib/f1-api';
 import { predictStrategy, mapCircuitId, CIRCUIT_DATA, getTyreColor, getTyreShort, Strategy } from '@/lib/tyre-strategy';
 import { getTeamColor } from '@/lib/team-colors';
 import {
-    Map as CircuitIcon, Gauge as SpeedometerIcon, Flag as FlagIcon, Clock as ClockIcon, Calendar as CalendarIcon,
-    Trophy as TrophyIcon, CloudSun as WeatherIcon, Car as RacingCarIcon, Disc as TyreIcon, Zap as BoltIcon, Award as MedalIcon,
-    Thermometer, Droplets, Wind, CloudRain, Cloud, Eye
-} from 'lucide-react';
+    CircuitIcon, SpeedometerIcon, FlagIcon, ClockIcon, CalendarIcon,
+    TrophyIcon, WeatherIcon, RacingCarIcon, TyreIcon, BoltIcon, MedalIcon
+} from '@/components/Icons';
 
 export default function CircuitPage() {
     const params = useParams();
@@ -99,7 +98,7 @@ export default function CircuitPage() {
                     <Link href="/calendar" className={styles.backLink}>← Back to Calendar</Link>
                     <div className={styles.heroMain}>
                         <div className={styles.heroInfo}>
-                            <span className={styles.heroFlag}>{circuitDetail?.flagEmoji || <FlagIcon size={24} color="#E10600" />}</span>
+                            <span className={styles.heroFlag}>{circuitDetail?.flagEmoji || '🏁'}</span>
                             <h1 className={styles.heroTitle}>
                                 {circuitDetail?.name || circuitApi?.circuitName || circuitId}
                             </h1>
@@ -209,32 +208,32 @@ export default function CircuitPage() {
                             </div>
                             <div className={styles.weatherGrid}>
                                 <div className={styles.weatherItem}>
-                                    <Thermometer size={16} />
+                                    <span>🌡️</span>
                                     <span>Feels Like</span>
                                     <span>{weather.feels_like}°C</span>
                                 </div>
                                 <div className={styles.weatherItem}>
-                                    <Droplets size={16} />
+                                    <span>💧</span>
                                     <span>Humidity</span>
                                     <span>{weather.humidity}%</span>
                                 </div>
                                 <div className={styles.weatherItem}>
-                                    <Wind size={16} />
+                                    <span>💨</span>
                                     <span>Wind</span>
                                     <span>{weather.wind_speed.toFixed(1)} m/s</span>
                                 </div>
                                 <div className={styles.weatherItem}>
-                                    <CloudRain size={16} />
+                                    <span>🌧️</span>
                                     <span>Rain Prob.</span>
                                     <span>{weather.rain_probability}%</span>
                                 </div>
                                 <div className={styles.weatherItem}>
-                                    <Cloud size={16} />
+                                    <span>☁️</span>
                                     <span>Cloud Cover</span>
                                     <span>{weather.clouds}%</span>
                                 </div>
                                 <div className={styles.weatherItem}>
-                                    <Eye size={16} />
+                                    <span>👁️</span>
                                     <span>Visibility</span>
                                     <span>{(weather.visibility / 1000).toFixed(1)} km</span>
                                 </div>

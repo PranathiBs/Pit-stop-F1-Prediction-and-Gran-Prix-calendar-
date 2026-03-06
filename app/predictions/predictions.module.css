@@ -85,10 +85,10 @@
     align-items: center;
     gap: 4px;
     padding: 14px 8px;
-    background: rgba(0, 0, 0, 0.30);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.40);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.85);
     cursor: pointer;
     transition: all 0.25s;
     font-family: inherit;
@@ -130,9 +130,8 @@
     border-radius: 14px;
     padding: 24px;
     margin-bottom: 24px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .weatherPanelHeader {
@@ -319,9 +318,8 @@
     border-radius: 14px;
     padding: 24px;
     margin-bottom: 24px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
 }
 
 .trackGrid {
@@ -337,8 +335,7 @@
     gap: 4px;
     padding: 14px;
     text-align: center;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.03);
     border-radius: 10px;
 }
 
@@ -381,14 +378,11 @@
 }
 
 .strategyCard {
-    background: rgba(0, 0, 0, 0.40);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
     border-radius: 14px;
     padding: 24px;
     transition: all 0.3s;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
 }
 
 .strategyCard:hover {
@@ -643,14 +637,11 @@
 /* ─── ML Race Prediction Grid ─────────────────────────────── */
 
 .mlSection {
-    background: rgba(20, 16, 0, 0.6);
-    border: 1px solid rgba(255, 215, 0, 0.25);
+    background: rgba(255, 215, 0, 0.04);
+    border: 1px solid rgba(255, 215, 0, 0.18);
     border-radius: 14px;
     padding: 22px;
     margin-bottom: 24px;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    box-shadow: 0 4px 28px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 215, 0, 0.05);
 }
 
 .mlHeader {

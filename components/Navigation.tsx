@@ -3,18 +3,16 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { motion } from 'framer-motion';
-import { Home, Calendar, Trophy, Zap, BarChart3, Clock, Radio, Activity } from 'lucide-react';
-import Logo from './Logo';
 import styles from './Navigation.module.css';
+import { CheckeredFlag, DashboardIcon, CalendarIcon, TrophyIcon, RacingCarIcon, StatsIcon, LiveIcon } from './Icons';
 
 const navItems = [
-    { href: '/', label: 'Dashboard', Icon: Home },
-    { href: '/calendar', label: 'Calendar', Icon: Calendar },
-    { href: '/standings', label: 'Standings', Icon: Trophy },
-    { href: '/predictions', label: 'Strategy', Icon: Zap },
-    { href: '/records', label: 'Records', Icon: BarChart3 },
-    { href: '/history', label: 'History', Icon: Clock },
+    { href: '/', label: 'Dashboard', Icon: DashboardIcon },
+    { href: '/calendar', label: 'Calendar', Icon: CalendarIcon },
+    { href: '/standings', label: 'Standings', Icon: TrophyIcon },
+    { href: '/predictions', label: 'Strategy', Icon: RacingCarIcon },
+    { href: '/records', label: 'Records', Icon: StatsIcon },
+    { href: '/history', label: 'History', Icon: LiveIcon },
 ];
 
 export default function Navigation() {
@@ -32,9 +30,12 @@ export default function Navigation() {
 
     return (
         <nav className={`${styles.nav} ${scrolled ? styles.scrolled : ''}`}>
-            <div className={`${styles.container} glass-card`}>
+            <div className={styles.container}>
                 <Link href="/" className={styles.logo}>
-                    <Logo size={24} />
+                    <span className={styles.logoFlag}>
+                        <CheckeredFlag size={42} />
+                    </span>
+                    <span className={styles.logoText}>PIT STOP</span>
                 </Link>
 
                 <div className={`${styles.links} ${mobileOpen ? styles.open : ''}`}>
@@ -47,28 +48,20 @@ export default function Navigation() {
                                 className={`${styles.link} ${isActive ? styles.active : ''}`}
                                 onClick={() => setMobileOpen(false)}
                             >
-                                <motion.span
-                                    className={styles.linkIcon}
-                                    whileHover={{ y: -2 }}
-                                >
-                                    <item.Icon size={18} />
-                                </motion.span>
+                                <span className={styles.linkIcon}>
+                                    <item.Icon size={18} color={isActive ? '#E10600' : 'currentColor'} />
+                                </span>
                                 <span className={styles.linkLabel}>{item.label}</span>
-                                {isActive && (
-                                    <motion.span
-                                        layoutId="line"
-                                        className={styles.activeIndicator}
-                                    />
-                                )}
+                                {isActive && <span className={styles.activeIndicator} />}
                             </Link>
                         );
                     })}
                 </div>
 
                 <div className={styles.rightSection}>
-                    <div className={`${styles.liveIndicator} glass-card`}>
-                        <Activity size={14} className={styles.livePulse} />
-                        <span className={`${styles.liveText} text-mono`}>LIVE</span>
+                    <div className={styles.liveIndicator}>
+                        <LiveIcon size={16} />
+                        <span className={styles.liveText}>LIVE</span>
                     </div>
 
                     <div className={styles.regBadge}>
