@@ -1,0 +1,848 @@
+.page {
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+}
+
+/* Loading */
+.loadingPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    gap: 16px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+}
+
+.loadingSpinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #a0d9f8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Hero */
+.hero {
+    position: relative;
+    padding: 40px 24px 50px;
+    overflow: hidden;
+    background: linear-gradient(180deg, rgba(225, 6, 0, 0.06) 0%, transparent 100%);
+}
+
+.heroOverlay {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 40px 40px;
+}
+
+.heroContent {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: #a0d9f8;
+}
+
+.heroMain {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.heroInfo {
+    flex: 1;
+}
+
+.heroFlag {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.heroTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 8px;
+    background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0.7));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.heroLocation {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 16px;
+}
+
+.heroDescription {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.7;
+    max-width: 600px;
+}
+
+/* Track Map */
+.trackMap {
+    width: 320px;
+    height: 320px;
+    flex-shrink: 0;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.trackMap:hover {
+    transform: scale(1.02) translateY(-5px);
+    border-color: rgba(160, 217, 248, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+.expandHint {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.trackMap:hover .expandHint {
+    opacity: 1;
+}
+
+.trackSvg {
+    width: 100%;
+    height: 100%;
+}
+
+/* Modal Expansion */
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modalContent {
+    position: relative;
+    max-width: 1100px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+}
+
+.expandedImg {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    mix-blend-mode: screen;
+    filter: brightness(1.2) contrast(1.1) drop-shadow(0 0 50px rgba(160, 217, 248, 0.3));
+}
+
+.modalTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: white;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.closeBtn {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 4rem;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.5;
+    transition: all 0.3s;
+}
+
+.closeBtn:hover {
+    opacity: 1;
+    transform: rotate(90deg) scale(1.1);
+    color: #a0d9f8;
+}
+
+.circuitImageWrap {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.circuitImage {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* F1 official maps have grey background, 'screen' blends them into dark UI */
+    mix-blend-mode: screen;
+    filter: brightness(1.2) contrast(1.1);
+}
+
+.trackPath {
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawTrack 2s ease forwards;
+}
+
+@keyframes drawTrack {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.startMarker {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.4;
+    }
+}
+
+/* Stats Grid */
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin: -20px 0 32px;
+    position: relative;
+    z-index: 2;
+}
+
+.statCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 12px;
+    gap: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.statCard:hover {
+    border-color: rgba(160, 217, 248, 0.3);
+    transform: translateY(-2px);
+}
+
+.statIcon {
+    font-size: 1.2rem;
+}
+
+.statValue {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: white;
+}
+
+.statLabel {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Lap Record */
+.lapRecordSection {
+    margin-bottom: 32px;
+}
+
+.lapRecordCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 24px;
+    background: linear-gradient(135deg, rgba(160, 217, 248, 0.08), rgba(160, 217, 248, 0.02));
+    border: 1px solid rgba(160, 217, 248, 0.2);
+    border-radius: 12px;
+}
+
+.lapRecordIcon {
+    font-size: 2rem;
+}
+
+.lapRecordTitle {
+    display: block;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.lapRecordTime {
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #a0d9f8;
+}
+
+.lapRecordDriver {
+    display: block;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* Section Title */
+.sectionTitle {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+/* Weather */
+.weatherSection {
+    margin-bottom: 40px;
+}
+
+.currentWeather {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 16px;
+}
+
+.weatherMain {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.weatherEmoji {
+    font-size: 3rem;
+}
+
+.weatherTemp {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    color: white;
+}
+
+.weatherCondition {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: capitalize;
+}
+
+.weatherGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+
+.weatherItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.weatherItem span:last-child {
+    margin-left: auto;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Forecast */
+.forecastGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+}
+
+.forecastCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 18px 14px;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.forecastCard:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.forecastDay {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+}
+
+.forecastIcon {
+    font-size: 2rem;
+}
+
+.forecastTemps {
+    display: flex;
+    gap: 8px;
+}
+
+.tempHigh {
+    font-weight: 700;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.tempLow {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+}
+
+.forecastDesc {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: capitalize;
+}
+
+.forecastRain {
+    font-size: 0.7rem;
+    color: #4A90D9;
+    font-weight: 600;
+}
+
+/* Strategy Section */
+.strategySection {
+    margin-bottom: 40px;
+}
+
+.strategySubtitle {
+    font-size: 0.82rem;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: -14px;
+    margin-bottom: 24px;
+}
+
+.strategyGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 16px;
+}
+
+.strategyCard {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 14px;
+    padding: 24px;
+    transition: all 0.3s;
+}
+
+.strategyCard:hover {
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.strategyCard.recommended {
+    border-color: rgba(160, 217, 248, 0.3);
+    background: rgba(160, 217, 248, 0.03);
+}
+
+.recommendedBadge {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-bottom: 12px;
+    background: rgba(160, 217, 248, 0.12);
+    border-radius: 12px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #a0d9f8;
+}
+
+.strategyHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    gap: 12px;
+}
+
+.strategyName {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+}
+
+.strategyMeta {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.riskBadge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.riskLOW {
+    background: rgba(57, 181, 74, 0.15);
+    color: #39B54A;
+}
+
+.riskMEDIUM {
+    background: rgba(255, 201, 6, 0.15);
+    color: #FFC906;
+}
+
+.riskHIGH {
+    background: rgba(225, 6, 0, 0.15);
+    color: #a0d9f8;
+}
+
+.stopsBadge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.strategyDesc {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 18px;
+    line-height: 1.5;
+}
+
+/* Timeline */
+.timeline {
+    display: flex;
+    height: 32px;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 16px;
+    gap: 2px;
+}
+
+.timelineStint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-width: 40px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 800;
+    transition: all 0.3s;
+}
+
+.timelineStint:hover {
+    filter: brightness(1.2);
+}
+
+.stintLabel {
+    font-weight: 900;
+}
+
+.stintLaps {
+    font-size: 0.5rem;
+    opacity: 0.7;
+}
+
+/* Stint Details */
+.stintDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.stintRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0;
+}
+
+.stintCompound {
+    width: 28px;
+    height: 28px;
+    border: 2px solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.stintInfo {
+    flex: 1;
+}
+
+.stintInfo span:first-child {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.stintLapRange {
+    display: block;
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.35);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.degradationBadge {
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.deglow {
+    background: rgba(57, 181, 74, 0.12);
+    color: #39B54A;
+}
+
+.degmedium {
+    background: rgba(255, 201, 6, 0.12);
+    color: #FFC906;
+}
+
+.deghigh {
+    background: rgba(225, 6, 0, 0.12);
+    color: #a0d9f8;
+}
+
+/* Confidence Bar */
+.confidenceBar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.confidenceLabel {
+    font-size: 0.68rem;
+    color: rgba(255, 255, 255, 0.4);
+    white-space: nowrap;
+}
+
+.confidenceTrack {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.confidenceFill {
+    height: 100%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #a0d9f8, #3a5bbf);
+    transition: width 1s ease;
+}
+
+.confidenceValue {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a0d9f8;
+    min-width: 36px;
+    text-align: right;
+}
+
+/* Results */
+.resultsSection {
+    margin-bottom: 40px;
+}
+
+.resultsTable {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.resultRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+    transition: background 0.2s;
+}
+
+.resultRow:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.resultPos {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.4);
+    min-width: 36px;
+}
+
+.topPos {
+    color: #a0d9f8;
+}
+
+.resultStripe {
+    width: 3px;
+    height: 28px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.resultDriver {
+    flex: 1;
+}
+
+.resultDriver span {
+    display: block;
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.resultTeam {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+}
+
+.resultTime {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.resultPoints {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.6);
+    min-width: 40px;
+    text-align: right;
+}
+
+@media (max-width: 1024px) {
+    .heroMain {
+        flex-direction: column;
+    }
+
+    .trackMap {
+        width: 100%;
+        max-width: 300px;
+        height: 300px;
+    }
+
+    .weatherGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 1.6rem;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .strategyGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .forecastGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

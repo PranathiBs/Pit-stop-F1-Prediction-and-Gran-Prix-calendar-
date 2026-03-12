@@ -1,0 +1,164 @@
+.tracker {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabs {
+    display: flex;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.tab:hover {
+    background: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.tabActive {
+    color: #E10600 !important;
+    background: rgba(225, 6, 0, 0.05) !important;
+    border-bottom: 2px solid #E10600;
+}
+
+.list {
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    animation: slideIn 0.4s ease forwards;
+    opacity: 0;
+}
+
+.row:hover {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.rank {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.3);
+    min-width: 20px;
+    text-align: center;
+}
+
+.topRank {
+    color: #E10600;
+}
+
+.info {
+    flex: 0 0 130px;
+}
+
+.name {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.meta {
+    display: block;
+    font-size: 0.62rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.barArea {
+    flex: 1;
+}
+
+.barBg {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1.2s ease;
+}
+
+.value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 70px;
+    text-align: right;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 3px;
+}
+
+.topValue {
+    color: #E10600;
+    font-weight: 900;
+}
+
+.topValueGreen {
+    color: #39B54A;
+    font-weight: 900;
+}
+
+.unit {
+    font-size: 0.5rem;
+    color: rgba(255, 255, 255, 0.3);
+    font-weight: 500;
+}
+
+@media (max-width: 640px) {
+    .info {
+        flex: 0 0 100px;
+    }
+
+    .value {
+        min-width: 55px;
+        font-size: 0.72rem;
+    }
+}

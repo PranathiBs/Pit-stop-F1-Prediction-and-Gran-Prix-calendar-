@@ -1,0 +1,20 @@
+# Web Frameworks
+streamlit>=1.35.0
+fastapi>=0.110.0
+uvicorn>=0.27.0
+
+# Formula 1 Data Engine
+fastf1>=3.8.0
+
+# Data Processing & Math
+pandas>=2.2.0
+numpy>=1.26.0
+scipy>=1.12.0
+
+# Visualization
+matplotlib>=3.8.0
+plotly>=5.18.0
+
+# Machine Learning (Include only what you use)
+scikit-learn>=1.4.0
+# xgboost  # Uncomment if using XGBoost
