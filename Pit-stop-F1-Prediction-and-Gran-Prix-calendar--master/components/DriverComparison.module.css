@@ -1,0 +1,185 @@
+.comparison {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: white;
+}
+
+/* Selectors */
+.selectors {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.selectorGroup {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.selectorStripe {
+    height: 3px;
+    border-radius: 2px;
+}
+
+.selector {
+    width: 100%;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.selector option {
+    background: #1a1a1a;
+    color: white;
+}
+
+.selectorTeam {
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.vsCircle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(160, 217, 248, 0.1);
+    border: 1px solid rgba(160, 217, 248, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.6rem;
+    font-weight: 900;
+    color: #a0d9f8;
+}
+
+/* Bar Duel */
+.barDuel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.barRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.barLabel {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 60px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.barTrack {
+    flex: 1;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.barFill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.barValue {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    min-width: 40px;
+    text-align: right;
+}
+
+/* Stats */
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.statRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.statLabel {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.35);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.statVal {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.5);
+    min-width: 50px;
+}
+
+.statVal:first-child {
+    text-align: left;
+}
+
+.statVal:last-child {
+    text-align: right;
+}
+
+.statWin {
+    font-weight: 900;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .selectors {
+        flex-direction: column;
+    }
+
+    .vsCircle {
+        align-self: center;
+    }
+}
